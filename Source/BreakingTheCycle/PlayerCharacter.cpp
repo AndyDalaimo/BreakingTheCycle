@@ -12,7 +12,7 @@
 #include "EnhancedInputSubsystems.h"
 
 // Sets default values
-APlayerCharacter::APlayerCharacter()
+APlayerCharacter::APlayerCharacter() : bCanInteract(false)
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	// PrimaryActorTick.bCanEverTick = false;
@@ -55,6 +55,8 @@ APlayerCharacter::APlayerCharacter()
 void APlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+
+	GameInstanceRef = Cast<UGrimlessGameInstance>(GetWorld()->GetGameInstance());
 
 	// Add Mapping Context
 	if (APlayerController* PlayerController = Cast<APlayerController>(Controller))
@@ -137,4 +139,8 @@ void APlayerCharacter::Look(const FInputActionValue& Value)
 void APlayerCharacter::Interact(const FInputActionValue& Value)
 {
 	UE_LOG(LogTemp, Warning, TEXT("INTERACT"));
+
+
+
+	if (bCanInteract) { GameInstanceRef->ShowNoteUIWidget(); }
 }

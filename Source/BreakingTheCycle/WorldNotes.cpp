@@ -14,7 +14,8 @@ AWorldNotes::AWorldNotes()
 
 	BoxCollider = CreateDefaultSubobject<UBoxComponent>(TEXT("BoxCollider"));
 	BoxCollider->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
-	BoxCollider->OnComponentBeginOverlap.AddDynamic(this, &AWorldNotes::OnPlayerOverlap);
+	BoxCollider->OnComponentBeginOverlap.AddDynamic(this, &AWorldNotes::OnPlayerBeginOverlap);
+	BoxCollider->OnComponentEndOverlap.AddDynamic(this, &AWorldNotes::OnPlayerEndOverlap);
 
 }
 
@@ -23,13 +24,14 @@ void AWorldNotes::BeginPlay()
 {
 	Super::BeginPlay();
 
+
 	PlayerRef = Cast<APlayerCharacter>(GetWorld()->GetFirstPlayerController()->GetPawn());
 	
 	GameInstanceRef = Cast<UGrimlessGameInstance>(GetWorld()->GetGameInstance());
 }
 
 // Overlap Function to allow player to interact with note
-void AWorldNotes::OnPlayerOverlap(UPrimitiveComponent* OverlappedComponent, 
+void AWorldNotes::OnPlayerBeginOverlap(UPrimitiveComponent* OverlappedComponent,
 	AActor* OtherActor, 
 	UPrimitiveComponent* OtherComp, 
 	int32 OtherBodyIndex,
@@ -39,7 +41,22 @@ void AWorldNotes::OnPlayerOverlap(UPrimitiveComponent* OverlappedComponent,
 	if (OtherActor == PlayerRef && OtherComp)
 	{
 		UE_LOG(LogTemp, Display, TEXT("Player CAN Interact with Note"));
-		GameInstanceRef->ShowNoteUIWidget();
+		PlayerRef->bCanInteract = true;
+		// GameInstanceRef->ShowNoteUIWidget();
+	}
+}
+
+
+void AWorldNotes::OnPlayerEndOverlap(UPrimitiveComponent* OverlappedComponent, 
+	AActor* OtherActor, 
+	UPrimitiveComponent* OtherComp, 
+	int32 OtherBodyIndex)
+{
+	if (OtherActor == PlayerRef)
+	{
+		UE_LOG(LogTemp, Display, TEXT("Player CANNOT Interact with Note"));
+		PlayerRef->bCanInteract = false;
+		GameInstanceRef->DestroyNoteUIWidget();
 	}
 }
 

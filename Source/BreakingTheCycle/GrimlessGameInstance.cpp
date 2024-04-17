@@ -45,7 +45,8 @@ void UGrimlessGameInstance::DestroyNoteUIWidget()
 {
 	if (NoteUIActive)
 	{
-		// Remove All widget ----- Change later
+		// Remove All widget -----> Change later
 		UWidgetLayoutLibrary::RemoveAllWidgets(GetWorld());
+		NoteUIActive = false;
 	}
 }

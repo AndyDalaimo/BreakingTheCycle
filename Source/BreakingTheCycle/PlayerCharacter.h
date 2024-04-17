@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "GrimlessGameInstance.h"
 #include "InputActionValue.h"
 #include "PlayerCharacter.generated.h"
 
@@ -37,6 +38,9 @@ public:
 	// Sets default values for this character's properties
 	APlayerCharacter();
 
+	// Allow Player to Interact with Note / World Item
+	bool bCanInteract;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -55,5 +59,10 @@ protected:
 	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
 	/** Returns FollowCamera subobject **/
 	FORCEINLINE class UCameraComponent* GetFollowCamera() const { return FollowCamera; }
+
+private:
+
+	// Instance to Game Instance
+	UGrimlessGameInstance* GameInstanceRef;
 
 };
