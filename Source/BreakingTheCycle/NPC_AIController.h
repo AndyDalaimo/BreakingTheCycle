@@ -18,5 +18,5 @@ public:
 	explicit ANPC_AIController(FObjectInitializer const& ObjectInitializer);
 	
 protected:
-	virtual void OnPosses(APawn* InPawn) override;
+	virtual void OnPossess(APawn* InPawn) override;
 };

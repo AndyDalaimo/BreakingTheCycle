@@ -42,3 +42,21 @@ UBehaviorTree* AHouseCharacter::GetBehaviorTree() const
 {
 	return Tree;
 }
+
+FVector AHouseCharacter::GetNextTargetLocation()
+{
+	FVector resultLoc;
+	if (!TargetLocations.IsEmpty())
+	{
+		if (currentLocIndex >= TargetLocations.Num())
+		{
+			currentLocIndex = 0;
+			resultLoc = TargetLocations[currentLocIndex];
+		}
+		else {
+			resultLoc = TargetLocations[currentLocIndex];
+			currentLocIndex++;
+		}
+	}
+	return resultLoc;
+}

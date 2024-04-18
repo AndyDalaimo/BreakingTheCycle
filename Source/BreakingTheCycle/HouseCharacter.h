@@ -19,17 +19,26 @@ public:
 	AHouseCharacter();
 
 	// Get this Pawn's Behavior Tree
-	UBehaviorTree* GetBehaviorTree() const;
+	class UBehaviorTree* GetBehaviorTree() const;
+
+	UFUNCTION()
+		FVector GetNextTargetLocation();
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "HouseState", meta = (AllowPrivateAccess = "true"))
-		AHouseStateMachine* HouseState;
+		class AHouseStateMachine* HouseState;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI", meta = (AllowPrivateAccess = "true"))
-		UBehaviorTree* Tree;
+		class UBehaviorTree* Tree;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI", meta = (AllowPrivateAccess = "true"))
+		TArray<FVector> TargetLocations;
+
+private:
+	int currentLocIndex = 0;
 
 public:	
 	// Called every frame
