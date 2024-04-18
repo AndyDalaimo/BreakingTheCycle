@@ -11,10 +11,14 @@ AHouseCharacter::AHouseCharacter()
 
 }
 
+
+
 // Called when the game starts or when spawned
 void AHouseCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+
+	HouseState = Cast<AHouseStateMachine>(UGameplayStatics::GetActorOfClass(GetWorld(), AHouseStateMachine::StaticClass()));
 	
 }
 
@@ -33,3 +37,8 @@ void AHouseCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
 
 }
 
+// Return this Pawn's Behavior Tree
+UBehaviorTree* AHouseCharacter::GetBehaviorTree() const
+{
+	return Tree;
+}

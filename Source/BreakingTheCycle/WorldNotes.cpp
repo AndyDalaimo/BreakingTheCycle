@@ -24,7 +24,6 @@ void AWorldNotes::BeginPlay()
 {
 	Super::BeginPlay();
 
-
 	PlayerRef = Cast<APlayerCharacter>(GetWorld()->GetFirstPlayerController()->GetPawn());
 	
 	GameInstanceRef = Cast<UGrimlessGameInstance>(GetWorld()->GetGameInstance());

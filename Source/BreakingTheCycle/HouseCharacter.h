@@ -4,6 +4,9 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "HouseStateMachine.h"
+#include "BehaviorTree/BehaviorTree.h"
+#include "Kismet/GameplayStatics.h"
 #include "HouseCharacter.generated.h"
 
 UCLASS()
@@ -15,9 +18,18 @@ public:
 	// Sets default values for this character's properties
 	AHouseCharacter();
 
+	// Get this Pawn's Behavior Tree
+	UBehaviorTree* GetBehaviorTree() const;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "HouseState", meta = (AllowPrivateAccess = "true"))
+		AHouseStateMachine* HouseState;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI", meta = (AllowPrivateAccess = "true"))
+		UBehaviorTree* Tree;
 
 public:	
 	// Called every frame
