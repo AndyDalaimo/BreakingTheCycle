@@ -5,6 +5,7 @@
 
 #include "NavigationSystem.h"
 #include "NPC_AIController.h"
+#include "HouseCharacter.h"
 #include "BehaviorTree/BlackboardComponent.h"
 
 UBTTask_FindRandomLocation::UBTTask_FindRandomLocation(FObjectInitializer const& ObjectInitializer)
@@ -18,8 +19,11 @@ EBTNodeResult::Type UBTTask_FindRandomLocation::ExecuteTask(UBehaviorTreeCompone
 	// Get AI Controller and its NPC 
 	if (auto* const controller = Cast<ANPC_AIController>(OwnerComp.GetAIOwner()))
 	{
-		if (auto* const npc = controller->GetPawn())
+		if (AHouseCharacter* const npc = Cast<AHouseCharacter>(controller->GetPawn()))
 		{
+			// Stop patrolling if character is DEAD
+			if (npc->GetThisCharacterState() == ENPCState::DEAD || npc->GetThisCharacterState() == ENPCState::SUSPICIOUS) return EBTNodeResult::Failed;
+
 			// obtain npc lcoaiton and use it as origin
 			auto const Origin = npc->GetActorLocation();
 

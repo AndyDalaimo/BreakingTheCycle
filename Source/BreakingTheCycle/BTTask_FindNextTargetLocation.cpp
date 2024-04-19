@@ -3,7 +3,6 @@
 
 #include "BTTask_FindNextTargetLocation.h"
 
-#include "NavigationSystem.h"
 #include "HouseCharacter.h"
 #include "NPC_AIController.h"
 #include "BehaviorTree/BlackboardComponent.h"
@@ -15,27 +14,21 @@ UBTTask_FindNextTargetLocation::UBTTask_FindNextTargetLocation(FObjectInitialize
 
 EBTNodeResult::Type UBTTask_FindNextTargetLocation::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
-
 	// Get AI Controller and its NPC 
 	if (auto* const controller = Cast<ANPC_AIController>(OwnerComp.GetAIOwner()))
 	{
 		if (AHouseCharacter* const npc = Cast<AHouseCharacter>(controller->GetPawn()))
 		{
-			// obtain npc lcoaiton and use it as origin
-			auto const Origin = npc->GetActorLocation();
+			// If this character is DEAD, drop from tree finding next target location
+			if (npc->GetThisCharacterState() == ENPCState::SUSPICIOUS || npc->GetThisCharacterState() == ENPCState::DEAD) return EBTNodeResult::Failed;
 
-			// Get the navigation system and grab a random location
-			if (auto* const NavSystem = UNavigationSystemV1::GetCurrent(GetWorld()))
-			{
-				FNavLocation Location;
+			FNavLocation Location;
+			Location.Location = npc->GetNextTargetLocation();
+			OwnerComp.GetBlackboardComponent()->SetValueAsVector(GetSelectedBlackboardKey(), Location.Location);
 
-				Location.Location = npc->GetNextTargetLocation();
-				OwnerComp.GetBlackboardComponent()->SetValueAsVector(GetSelectedBlackboardKey(), Location.Location);
-
-				// Finish with Success
-				FinishLatentTask(OwnerComp, EBTNodeResult::Succeeded);
-				return EBTNodeResult::Succeeded;
-			}
+			// Finish with Success
+			FinishLatentTask(OwnerComp, EBTNodeResult::Succeeded);
+			return EBTNodeResult::Succeeded;
 		}
 	}
 

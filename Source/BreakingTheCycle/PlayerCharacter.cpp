@@ -140,7 +140,6 @@ void APlayerCharacter::Interact(const FInputActionValue& Value)
 {
 	UE_LOG(LogTemp, Warning, TEXT("INTERACT"));
 
-
-
+	// TODO -- Somehow tell the WBP_NOTE which Note from data table to display	
 	if (bCanInteract) { GameInstanceRef->ShowNoteUIWidget(); }
 }

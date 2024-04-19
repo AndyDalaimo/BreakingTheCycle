@@ -48,5 +48,5 @@ ENPCState AHouseStateMachine::GetThisNPCState(FName name)
 		}
 	}
 
-	return ENPCState::CALM;
+	return ENPCState::DEAD;
 }

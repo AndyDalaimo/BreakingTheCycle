@@ -10,7 +10,7 @@
 UENUM(BlueprintType)
 enum class ENPCState : uint8
 {
-	CALM = 0 UMETA(DisplayName = "Calm"),
+	DEAD = 0 UMETA(DisplayName = "Dead"),
 	HUNTED = 1 UMETA(DisplayName = "Hunted"),
 	SUSPICIOUS = 2 UMETA(DisplayName = "Suspicious")
 };

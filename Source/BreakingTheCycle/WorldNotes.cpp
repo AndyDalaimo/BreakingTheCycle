@@ -45,7 +45,7 @@ void AWorldNotes::OnPlayerBeginOverlap(UPrimitiveComponent* OverlappedComponent,
 	}
 }
 
-
+// Exit from the Note UI if Player leaves the area
 void AWorldNotes::OnPlayerEndOverlap(UPrimitiveComponent* OverlappedComponent, 
 	AActor* OtherActor, 
 	UPrimitiveComponent* OtherComp, 

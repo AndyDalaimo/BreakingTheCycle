@@ -21,6 +21,10 @@ public:
 	// Get this Pawn's Behavior Tree
 	class UBehaviorTree* GetBehaviorTree() const;
 
+	// To be set when NPC interacts with Distraction item
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI", meta = (AllowPrivateAccess = "true"))
+		FVector DistractionLocation;
+
 	UFUNCTION()
 		FVector GetNextTargetLocation();
 	
