@@ -23,6 +23,9 @@ public:
 
 	UFUNCTION()
 		FVector GetNextTargetLocation();
+	
+	UFUNCTION(BlueprintCallable)
+		ENPCState GetThisCharacterState() const;
 
 protected:
 	// Called when the game starts or when spawned
@@ -36,6 +39,9 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI", meta = (AllowPrivateAccess = "true"))
 		TArray<FVector> TargetLocations;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Name", meta = (AllowPrivateAcces = "true"))
+		FName CharacterName;
 
 private:
 	int currentLocIndex = 0;

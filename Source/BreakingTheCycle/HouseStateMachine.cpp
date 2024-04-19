@@ -36,3 +36,17 @@ void AHouseStateMachine::ChangeCharacterState(FCurrentState newState)
 		}
 	}
 }
+
+ENPCState AHouseStateMachine::GetThisNPCState(FName name)
+{
+	for (int i = 0; i < CharacterStates.Num(); i++)
+	{
+		if (name == CharacterStates[i].Character)
+		{
+			return CharacterStates[i].State;
+			continue;
+		}
+	}
+
+	return ENPCState::CALM;
+}

@@ -60,3 +60,9 @@ FVector AHouseCharacter::GetNextTargetLocation()
 	}
 	return resultLoc;
 }
+
+// Return the current state of this character
+ENPCState AHouseCharacter::GetThisCharacterState() const
+{
+	return HouseState->GetThisNPCState(CharacterName);
+}

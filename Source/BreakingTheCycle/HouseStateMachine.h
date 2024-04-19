@@ -50,6 +50,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 		void ChangeCharacterState(FCurrentState newState);
 
+	UFUNCTION(BlueprintCallable)
+		ENPCState GetThisNPCState(FName name);
+
 protected:
 
 	virtual void BeginPlay();
