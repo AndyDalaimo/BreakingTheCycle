@@ -39,7 +39,7 @@ void AWorldDistraction::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent,
 	bool bFromSweep, 
 	const FHitResult& SweepResult)
 {
-	if (CastChecked<AHouseCharacter>(OtherActor) && OtherComp)
+	if (OtherComp && PlayerRef != OtherActor)
 	{
 		NPC = Cast<AHouseCharacter>(OtherActor);
 		if (DistractedState == EDistractedState::DISTRACTED && NPC->CharacterName == NPCToDistract)
@@ -52,9 +52,15 @@ void AWorldDistraction::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent,
 			state.State = ENPCState::SUSPICIOUS;
 			HouseStateRef->ChangeCharacterState(state);
 
-			NPC->TargetLocations[NPC->currentLocIndex] = this->DistractionLocation->GetComponentLocation();
+			// Update Distraction Location and reset state for Distraction Actor
 			NPC->DistractionLocation = this->DistractionLocation->GetComponentLocation();
+			DistractedState = EDistractedState::NEUTRAL;
 		}
+	}
+	else if (OtherActor == PlayerRef)
+	{
+		// TODO -- Player changes the distracted state when they want to i.e. on input
+		DistractedState = EDistractedState::DISTRACTED;
 	}
 }
 

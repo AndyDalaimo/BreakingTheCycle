@@ -23,6 +23,8 @@ EBTNodeResult::Type UBTTask_GoToDistractedLocation::ExecuteTask(UBehaviorTreeCom
 			{
 				FNavLocation Location;
 				Location.Location = npc->DistractionLocation;
+
+				// Set new location for the NPC to go investigate
 				OwnerComp.GetBlackboardComponent()->SetValueAsVector(GetSelectedBlackboardKey(), Location.Location);
 	
 				// Finish with Success

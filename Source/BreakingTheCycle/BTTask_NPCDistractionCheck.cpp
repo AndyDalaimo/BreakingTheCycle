@@ -19,7 +19,7 @@ EBTNodeResult::Type UBTTask_NPCDistractionCheck::ExecuteTask(UBehaviorTreeCompon
 
 		if (AHouseCharacter* const npc = Cast<AHouseCharacter>(controller->GetPawn()))
 		{
-			// Stop patrolling if character is DEAD
+			// Stop patrolling and go Check distraction
 			if (npc->GetThisCharacterState() == ENPCState::SUSPICIOUS)
 			{
 				OwnerComp.GetBlackboardComponent()->SetValueAsBool(GetSelectedBlackboardKey(), true);
