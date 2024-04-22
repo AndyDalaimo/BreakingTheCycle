@@ -9,6 +9,8 @@ ANPC_AIController::ANPC_AIController(FObjectInitializer const& ObjectInitializer
 {
 }
 
+
+
 // On Possession of the pawn, use the specified behavior tree if there is not one
 void ANPC_AIController::OnPossess(APawn* InPawn)
 {

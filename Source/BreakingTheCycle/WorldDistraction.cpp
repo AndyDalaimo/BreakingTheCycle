@@ -18,6 +18,7 @@ AWorldDistraction::AWorldDistraction()
 
 	DistractionLocation = CreateDefaultSubobject<UArrowComponent>(TEXT("DistractionLocation"));
 	DistractionLocation->SetupAttachment(RootComponent);
+	DistractionLocation->SetRelativeRotation(FRotator(90, 0, 0));
 }
 
 // Called when the game starts or when spawned
@@ -25,9 +26,9 @@ void AWorldDistraction::BeginPlay()
 {
 	Super::BeginPlay();
 
-	PlayerRef = Cast<APlayerCharacter>(GetWorld()->GetFirstPlayerController()->GetPawn());
+	HouseStateRef = Cast<AHouseStateMachine>(UGameplayStatics::GetActorOfClass(GetWorld(), AHouseStateMachine::StaticClass()));
 
-	DistractedState = EDistractedState::DISTRACTED;
+	PlayerRef = Cast<APlayerCharacter>(GetWorld()->GetFirstPlayerController()->GetPawn());
 	
 }
 
@@ -41,11 +42,18 @@ void AWorldDistraction::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent,
 	if (CastChecked<AHouseCharacter>(OtherActor) && OtherComp)
 	{
 		NPC = Cast<AHouseCharacter>(OtherActor);
-		UE_LOG(LogTemp, Display, TEXT("NPC is in Distraction Area"));
-		if (DistractedState == EDistractedState::DISTRACTED)
+		if (DistractedState == EDistractedState::DISTRACTED && NPC->CharacterName == NPCToDistract)
 		{
-			// Set the state of this NPC in the HOUSESTATEMACHINE actor in world -- Need Reference
+			// Set the state of this NPC in the HOUSESTATEMACHINE actor in world
 			UE_LOG(LogTemp, Display, TEXT("Distract this NPC"));
+			
+			FCurrentState state;
+			state.Character = NPCToDistract;
+			state.State = ENPCState::SUSPICIOUS;
+			HouseStateRef->ChangeCharacterState(state);
+
+			NPC->TargetLocations[NPC->currentLocIndex] = this->DistractionLocation->GetComponentLocation();
+			NPC->DistractionLocation = this->DistractionLocation->GetComponentLocation();
 		}
 	}
 }

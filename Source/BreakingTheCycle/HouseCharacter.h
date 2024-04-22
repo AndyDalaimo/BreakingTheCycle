@@ -7,6 +7,7 @@
 #include "HouseStateMachine.h"
 #include "BehaviorTree/BehaviorTree.h"
 #include "Kismet/GameplayStatics.h"
+#include "NPC_AIController.h"
 #include "HouseCharacter.generated.h"
 
 UCLASS()
@@ -31,6 +32,20 @@ public:
 	UFUNCTION(BlueprintCallable)
 		ENPCState GetThisCharacterState() const;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Name", meta = (AllowPrivateAcces = "true"))
+		ECharacterName CharacterName;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI", meta = (AllowPrivateAccess = "true"))
+		TArray<FVector> TargetLocations;
+
+	// Reference to its own AI Controller
+	UPROPERTY()
+	ANPC_AIController* AIControllerRef;
+
+	// Current Target Location
+	UPROPERTY()
+	int currentLocIndex = 0;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -41,14 +56,9 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI", meta = (AllowPrivateAccess = "true"))
 		class UBehaviorTree* Tree;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI", meta = (AllowPrivateAccess = "true"))
-		TArray<FVector> TargetLocations;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Name", meta = (AllowPrivateAcces = "true"))
-		FName CharacterName;
 
 private:
-	int currentLocIndex = 0;
 
 public:	
 	// Called every frame

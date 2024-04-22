@@ -31,13 +31,13 @@ void AHouseStateMachine::ChangeCharacterState(FCurrentState newState)
 		if (newState.Character == CharacterStates[i].Character)
 		{
 			CharacterStates[i].State = newState.State;
-			UE_LOG(LogTemp, Warning, TEXT("%s state has changed"), *CharacterStates[i].Character.ToString());
+			// UE_LOG(LogTemp, Warning, TEXT("%s state has changed"), UEnum::GetNameStringByValue(CharacterStates[i].Character);
 			continue;
 		}
 	}
 }
 
-ENPCState AHouseStateMachine::GetThisNPCState(FName name)
+ENPCState AHouseStateMachine::GetThisNPCState(ECharacterName name)
 {
 	for (int i = 0; i < CharacterStates.Num(); i++)
 	{

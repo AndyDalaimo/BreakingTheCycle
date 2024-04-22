@@ -8,6 +8,15 @@
 #include "HouseStateMachine.generated.h"
 
 UENUM(BlueprintType)
+enum class ECharacterName : uint8
+{
+	NONE = 0 UMETA(Hidden),
+	NOBLEMAN = 1 UMETA(DisplayName = "Nobleman"),
+	BUTLER = 2 UMETA(DisplayName = "Butler"),
+	SINGER = 3 UMETA(DisplayName = "Singer"),
+};
+
+UENUM(BlueprintType)
 enum class ENPCState : uint8
 {
 	DEAD = 0 UMETA(DisplayName = "Dead"),
@@ -23,7 +32,7 @@ struct FCurrentState
 public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "State|CurrentCharacterState")
-		FName Character;
+		ECharacterName Character;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "State|CurrentCharacterState")
 		ENPCState State;
@@ -51,7 +60,7 @@ public:
 		void ChangeCharacterState(FCurrentState newState);
 
 	UFUNCTION(BlueprintCallable)
-		ENPCState GetThisNPCState(FName name);
+		ENPCState GetThisNPCState(ECharacterName name);
 
 protected:
 

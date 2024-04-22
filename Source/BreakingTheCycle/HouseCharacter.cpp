@@ -4,7 +4,7 @@
 #include "HouseCharacter.h"
 
 // Sets default values
-AHouseCharacter::AHouseCharacter()
+AHouseCharacter::AHouseCharacter() 
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
@@ -19,7 +19,8 @@ void AHouseCharacter::BeginPlay()
 	Super::BeginPlay();
 
 	HouseState = Cast<AHouseStateMachine>(UGameplayStatics::GetActorOfClass(GetWorld(), AHouseStateMachine::StaticClass()));
-	
+
+	AIControllerRef = Cast<ANPC_AIController>(AIControllerClass);
 }
 
 // Called every frame

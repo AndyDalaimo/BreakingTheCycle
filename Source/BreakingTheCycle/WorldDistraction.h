@@ -6,6 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "HouseCharacter.h"
 #include "PlayerCharacter.h"
+#include "HouseStateMachine.h"
 #include "Components/BoxComponent.h"
 #include "Components/ArrowComponent.h"
 #include "WorldDistraction.generated.h"
@@ -40,6 +41,8 @@ public:
 	UPROPERTY(EditAnywhere, Category = "AI", meta = (AllowPrivateAccess = "true"))
 		EDistractedState DistractedState;
 
+	UPROPERTY(EditAnywhere, Category = "AI", meta = (AllowPrivateAccess = "true"))
+		ECharacterName NPCToDistract;
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -58,6 +61,9 @@ protected:
 
 	// Reference to AI_NPC
 	class AHouseCharacter* NPC;
+
+	// Reference to HouseStateMachine
+	AHouseStateMachine* HouseStateRef;
 
 public:	
 	// Called every frame
