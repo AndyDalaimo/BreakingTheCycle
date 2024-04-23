@@ -19,7 +19,7 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Mesh, meta = (AllowPrivateAccess = "true"))
 		UStaticMeshComponent* NoteMesh;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Collision, meta = (AllowPrivateAcces = "true"))
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Collision, meta = (AllowPrivateAccess = "true"))
 		UBoxComponent* BoxCollider;
 	
 
@@ -27,6 +27,10 @@ protected:
 public:	
 	// Sets default values for this actor's properties
 	AWorldNotes();
+
+	// Note this Actor is carrying
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AttachedNote")
+	FNoteStructure Note;
 
 protected:
 	// Called when the game starts or when spawned
@@ -47,6 +51,10 @@ protected:
 			AActor* OtherActor,
 			UPrimitiveComponent* OtherComp,
 			int32 OtherBodyIndex);
+
+	// Add in Note into the Player's inventory
+	UFUNCTION()
+		void AddNoteIntoPlayerInventory();
 
 	// Reference to Player
 	APlayerCharacter* PlayerRef;

@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Engine/DataAsset.h"
+#include "HouseStateMachine.h"
 #include "NoteData.generated.h"
 
 
@@ -22,7 +23,7 @@ struct FNoteStructure
 
 public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "NoteStructure")
-		FName Character;
+		ECharacterName Character;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "NoteStructure")
 		ENoteType NoteType;

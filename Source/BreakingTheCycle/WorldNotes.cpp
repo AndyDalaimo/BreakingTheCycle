@@ -41,7 +41,8 @@ void AWorldNotes::OnPlayerBeginOverlap(UPrimitiveComponent* OverlappedComponent,
 	{
 		UE_LOG(LogTemp, Display, TEXT("Player CAN Interact with Note"));
 		PlayerRef->bCanInteract = true;
-		// GameInstanceRef->ShowNoteUIWidget();
+
+		AddNoteIntoPlayerInventory();
 	}
 }
 
@@ -57,6 +58,12 @@ void AWorldNotes::OnPlayerEndOverlap(UPrimitiveComponent* OverlappedComponent,
 		PlayerRef->bCanInteract = false;
 		GameInstanceRef->DestroyNoteUIWidget();
 	}
+}
+
+void AWorldNotes::AddNoteIntoPlayerInventory()
+{
+	PlayerRef->AddNoteIntoInventory(Note);
+	Destroy();
 }
 
 // Called every frame

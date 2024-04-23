@@ -27,11 +27,27 @@ public:
 	// Destroy Note UI and reset NoteUIActive
 	UFUNCTION(BlueprintCallable)
 		void DestroyNoteUIWidget();
+	
+	// Create Note UI and Show correct note on screen#
+	UFUNCTION(BlueprintCallable)
+		void ShowInventoryUIWidget();
+	
+	// Destroy Note UI and reset NoteUIActive
+	UFUNCTION(BlueprintCallable)
+		void DestroyInventoryUIWidget();
 
+	// Initialize on Begin Play
+	UFUNCTION(BlueprintCallable)
+	virtual void init();
 
 private:
 
-	// Class Reference to Note UI 
+	// Class Reference to Note UI and Inventory UI
 	TSubclassOf<UUserWidget> NoteUIWidgetClass;
+	TSubclassOf<UUserWidget> InventoryUIWidgetClass;
+	UUserWidget* InventoryUI;
+
 	bool NoteUIActive;
+	bool InventoryUIActive;
+
 };

@@ -12,7 +12,7 @@
 #include "EnhancedInputSubsystems.h"
 
 // Sets default values
-APlayerCharacter::APlayerCharacter() : bCanInteract(false)
+APlayerCharacter::APlayerCharacter() : bCanInteract(false), bInventoryActive(false), bInteracting(false)
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	// PrimaryActorTick.bCanEverTick = false;
@@ -51,6 +51,8 @@ APlayerCharacter::APlayerCharacter() : bCanInteract(false)
 
 }
 
+
+
 // Called when the game starts or when spawned
 void APlayerCharacter::BeginPlay()
 {
@@ -86,6 +88,9 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 		
 		// Interact
 		EnhancedInputComponent->BindAction(InteractAction, ETriggerEvent::Started, this, &APlayerCharacter::Interact);
+
+		// Inventory
+		EnhancedInputComponent->BindAction(InventoryAction, ETriggerEvent::Started, this, &APlayerCharacter::ShowInventory);
 	}
 
 }
@@ -141,5 +146,37 @@ void APlayerCharacter::Interact(const FInputActionValue& Value)
 	UE_LOG(LogTemp, Warning, TEXT("INTERACT"));
 
 	// TODO -- Somehow tell the WBP_NOTE which Note from data table to display	
-	if (bCanInteract) { GameInstanceRef->ShowNoteUIWidget(); }
+	if (bCanInteract) 
+	{ 
+		GameInstanceRef->ShowNoteUIWidget(); 
+	}
+}
+
+void APlayerCharacter::ShowInventory(const FInputActionValue& Value)
+{
+	UE_LOG(LogTemp, Warning, TEXT("Show Inventory"));
+
+	if (!bCanInteract && !bInventoryActive) 
+	{ 
+		GameInstanceRef->ShowInventoryUIWidget(); 
+		GetCharacterMovement()->SetMovementMode(EMovementMode::MOVE_None);
+		bInventoryActive = true;
+	}
+	else if (bInventoryActive)
+	{
+		GameInstanceRef->DestroyInventoryUIWidget();
+		GetCharacterMovement()->SetMovementMode(EMovementMode::MOVE_Flying);
+		bInventoryActive = false;
+	}
+}
+
+
+// ---------------------------------------------------------------------
+// ---------------------- World Interactions ---------------------------
+// ---------------------------------------------------------------------
+
+void APlayerCharacter::AddNoteIntoInventory(FNoteStructure newNote)
+{
+	NoteInventory.Push(newNote);
+	GameInstanceRef->ShowNoteUIWidget();
 }

@@ -12,8 +12,9 @@ UGrimlessGameInstance::UGrimlessGameInstance(const FObjectInitializer& ObjectIni
 {
 	
 	static ConstructorHelpers::FClassFinder<UUserWidget> NoteUIFinder(TEXT("/Game/UI/WBP_Note"));
+	static ConstructorHelpers::FClassFinder<UUserWidget> InventoryUIFinder(TEXT("/Game/UI/WBP_Inventory"));
 
-	if (!NoteUIFinder.Succeeded())
+	if (!NoteUIFinder.Succeeded() && !InventoryUIFinder.Succeeded())
 	{
 		UE_LOG(LogTemp, Error, TEXT("UI NOT FOUND"));
 		return;
@@ -22,7 +23,16 @@ UGrimlessGameInstance::UGrimlessGameInstance(const FObjectInitializer& ObjectIni
 	{
 		UE_LOG(LogTemp, Display, TEXT("UI FOUND"));
 		NoteUIWidgetClass = NoteUIFinder.Class;
+		InventoryUIWidgetClass = InventoryUIFinder.Class;
 	}
+}
+
+// Initialize New Game Instance and set up Inventory Widget
+void UGrimlessGameInstance::init()
+{
+	// Create Inventory reference to use later	
+	InventoryUI = CreateWidget<UUserWidget>(this, InventoryUIWidgetClass);
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, InventoryUI ? InventoryUI->GetName() : "Not Valid");
 }
 
 
@@ -50,3 +60,52 @@ void UGrimlessGameInstance::DestroyNoteUIWidget()
 		NoteUIActive = false;
 	}
 }
+
+void UGrimlessGameInstance::ShowInventoryUIWidget()
+{
+	if (!InventoryUIActive && InventoryUI)
+	{
+		// UUserWidget* InventoryUI = CreateWidget<UUserWidget>(this, InventoryUIWidgetClass);
+		InventoryUI->AddToViewport();
+		InventoryUIActive = true;
+
+		// Reference to Player Controller
+		APlayerController* PlayerController = GetFirstLocalPlayerController();
+
+		// Set Up Input Parameters
+		// FInputModeUIOnly InputModeData;
+		FInputModeGameAndUI InputModeData;
+
+		InputModeData.SetWidgetToFocus(InventoryUI->TakeWidget());
+		InputModeData.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
+
+		// Set Input Modes
+		PlayerController->SetInputMode(InputModeData);
+		PlayerController->bShowMouseCursor = true;
+
+	}
+}
+
+void UGrimlessGameInstance::DestroyInventoryUIWidget()
+{
+	if (InventoryUIActive)
+	{
+		// Remove All widget -----> Change later
+		// UWidgetLayoutLibrary::RemoveAllWidgets(GetWorld());
+		InventoryUI->RemoveFromViewport();
+		InventoryUIActive = false;
+
+		APlayerController* PlayerController = GetFirstLocalPlayerController();
+
+		// Set up input parameters for player controller in Game
+		FInputModeGameOnly InputModeData;
+		InputModeData.SetConsumeCaptureMouseDown(true);
+
+
+		// Set Input Mode
+		PlayerController->SetInputMode(InputModeData);
+		// PlayerController->SetInputMode(MouseInputData);
+		PlayerController->bShowMouseCursor = false;
+	}
+}
+
