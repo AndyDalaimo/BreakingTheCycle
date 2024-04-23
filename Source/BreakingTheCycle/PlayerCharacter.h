@@ -16,10 +16,10 @@ class BREAKINGTHECYCLE_API APlayerCharacter : public ACharacter
 
 protected:
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	class USpringArmComponent* CameraBoom;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	class UCameraComponent* FollowCamera;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
@@ -44,14 +44,13 @@ public:
 
 	// Allow Player to Interact with Note / World Item
 	bool bCanInteract;
-	bool bInteracting;
 
 	// Player Note Inventory
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Inventory", meta = (AllowPrivateAccess = "true"))
 		TArray<FNoteStructure> NoteInventory;
 
 	UFUNCTION()
-		void AddNoteIntoInventory(FNoteStructure newNote);
+		void AddNoteIntoInventory(FNoteStructure newNote, AActor* noteActor);
 
 protected:
 	// Called when the game starts or when spawned
@@ -79,6 +78,9 @@ private:
 	// Instance to Game Instance
 	UGrimlessGameInstance* GameInstanceRef;
 
+	// Limit control to other UIs if player is searching through their inventory
 	bool bInventoryActive;
+	FNoteStructure NewNote;
+	AActor* NoteToDestroy;
 
 };

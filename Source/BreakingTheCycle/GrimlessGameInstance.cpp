@@ -47,6 +47,7 @@ void UGrimlessGameInstance::ShowNoteUIWidget()
 		UUserWidget* NoteUI = CreateWidget<UUserWidget>(this, NoteUIWidgetClass);
 		NoteUI->AddToViewport();
 		NoteUIActive = true;
+		UE_LOG(LogTemp, Display, TEXT("Showing Note UI Widget"));
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, NoteUI ? NoteUI->GetName() : "Not valid");
 	}
 }
@@ -58,6 +59,7 @@ void UGrimlessGameInstance::DestroyNoteUIWidget()
 		// Remove All widget -----> Change later
 		UWidgetLayoutLibrary::RemoveAllWidgets(GetWorld());
 		NoteUIActive = false;
+		UE_LOG(LogTemp, Display, TEXT("Destroying Note UI Widget"));
 	}
 }
 
@@ -68,6 +70,8 @@ void UGrimlessGameInstance::ShowInventoryUIWidget()
 		// UUserWidget* InventoryUI = CreateWidget<UUserWidget>(this, InventoryUIWidgetClass);
 		InventoryUI->AddToViewport();
 		InventoryUIActive = true;
+
+		UE_LOG(LogTemp, Display, TEXT("Showing Inventory UI Widget"));
 
 		// Reference to Player Controller
 		APlayerController* PlayerController = GetFirstLocalPlayerController();
@@ -86,7 +90,7 @@ void UGrimlessGameInstance::ShowInventoryUIWidget()
 	}
 }
 
-void UGrimlessGameInstance::DestroyInventoryUIWidget()
+void UGrimlessGameInstance::HideInventoryUIWidget()
 {
 	if (InventoryUIActive)
 	{
@@ -94,6 +98,8 @@ void UGrimlessGameInstance::DestroyInventoryUIWidget()
 		// UWidgetLayoutLibrary::RemoveAllWidgets(GetWorld());
 		InventoryUI->RemoveFromViewport();
 		InventoryUIActive = false;
+
+		UE_LOG(LogTemp, Display, TEXT("Hiding Inventory UI Widget"));
 
 		APlayerController* PlayerController = GetFirstLocalPlayerController();
 

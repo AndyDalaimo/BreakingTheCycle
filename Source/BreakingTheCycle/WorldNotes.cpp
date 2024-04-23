@@ -16,7 +16,6 @@ AWorldNotes::AWorldNotes()
 	BoxCollider->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
 	BoxCollider->OnComponentBeginOverlap.AddDynamic(this, &AWorldNotes::OnPlayerBeginOverlap);
 	BoxCollider->OnComponentEndOverlap.AddDynamic(this, &AWorldNotes::OnPlayerEndOverlap);
-
 }
 
 // Called when the game starts or when spawned
@@ -62,8 +61,7 @@ void AWorldNotes::OnPlayerEndOverlap(UPrimitiveComponent* OverlappedComponent,
 
 void AWorldNotes::AddNoteIntoPlayerInventory()
 {
-	PlayerRef->AddNoteIntoInventory(Note);
-	Destroy();
+	PlayerRef->AddNoteIntoInventory(Note, (AActor*)this);
 }
 
 // Called every frame

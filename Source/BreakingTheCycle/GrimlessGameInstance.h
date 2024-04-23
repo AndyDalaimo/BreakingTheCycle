@@ -19,6 +19,8 @@ public:
 
 	UGrimlessGameInstance(const FObjectInitializer& ObjectInitializer);
 	
+	// Inventory Reference to update when player adds Note to Inventory
+	UUserWidget* InventoryUI;
 
 	// Create Note UI and Show correct note on screen#
 	UFUNCTION(BlueprintCallable)
@@ -34,7 +36,7 @@ public:
 	
 	// Destroy Note UI and reset NoteUIActive
 	UFUNCTION(BlueprintCallable)
-		void DestroyInventoryUIWidget();
+		void HideInventoryUIWidget();
 
 	// Initialize on Begin Play
 	UFUNCTION(BlueprintCallable)
@@ -45,7 +47,6 @@ private:
 	// Class Reference to Note UI and Inventory UI
 	TSubclassOf<UUserWidget> NoteUIWidgetClass;
 	TSubclassOf<UUserWidget> InventoryUIWidgetClass;
-	UUserWidget* InventoryUI;
 
 	bool NoteUIActive;
 	bool InventoryUIActive;

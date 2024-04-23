@@ -22,13 +22,13 @@ struct FNoteStructure
 	GENERATED_USTRUCT_BODY()
 
 public:
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "NoteStructure")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "NoteStructure")
 		ECharacterName Character;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "NoteStructure")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "NoteStructure")
 		ENoteType NoteType;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "NoteStructure")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "NoteStructure")
 		FString Note; 
 };
 

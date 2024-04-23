@@ -12,7 +12,7 @@
 #include "EnhancedInputSubsystems.h"
 
 // Sets default values
-APlayerCharacter::APlayerCharacter() : bCanInteract(false), bInventoryActive(false), bInteracting(false)
+APlayerCharacter::APlayerCharacter() : bCanInteract(false), bInventoryActive(false)
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	// PrimaryActorTick.bCanEverTick = false;
@@ -146,8 +146,16 @@ void APlayerCharacter::Interact(const FInputActionValue& Value)
 	UE_LOG(LogTemp, Warning, TEXT("INTERACT"));
 
 	// TODO -- Somehow tell the WBP_NOTE which Note from data table to display	
-	if (bCanInteract) 
-	{ 
+	if (bCanInteract && NoteToDestroy) 
+	{
+		// Push new note into memory
+		NoteInventory.Push(NewNote);
+		NoteToDestroy->Destroy();
+
+		// Flush memory of temp Note
+		NewNote = FNoteStructure();
+		NoteToDestroy = nullptr;
+
 		GameInstanceRef->ShowNoteUIWidget(); 
 	}
 }
@@ -164,7 +172,7 @@ void APlayerCharacter::ShowInventory(const FInputActionValue& Value)
 	}
 	else if (bInventoryActive)
 	{
-		GameInstanceRef->DestroyInventoryUIWidget();
+		GameInstanceRef->HideInventoryUIWidget();
 		GetCharacterMovement()->SetMovementMode(EMovementMode::MOVE_Flying);
 		bInventoryActive = false;
 	}
@@ -175,8 +183,8 @@ void APlayerCharacter::ShowInventory(const FInputActionValue& Value)
 // ---------------------- World Interactions ---------------------------
 // ---------------------------------------------------------------------
 
-void APlayerCharacter::AddNoteIntoInventory(FNoteStructure newNote)
+void APlayerCharacter::AddNoteIntoInventory(FNoteStructure newNote, AActor* noteActor)
 {
-	NoteInventory.Push(newNote);
-	GameInstanceRef->ShowNoteUIWidget();
+	NewNote = newNote;
+	NoteToDestroy = noteActor;
 }
