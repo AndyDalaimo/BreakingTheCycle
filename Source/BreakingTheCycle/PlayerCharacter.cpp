@@ -152,11 +152,16 @@ void APlayerCharacter::Interact(const FInputActionValue& Value)
 		NoteInventory.Push(NewNote);
 		NoteToDestroy->Destroy();
 
-		// Flush memory of temp Note
+		// Reset temp Note
 		NewNote = FNoteStructure();
 		NoteToDestroy = nullptr;
 
 		GameInstanceRef->ShowNoteUIWidget(); 
+		return;
+	}
+	if (GameInstanceRef->NoteUIActive)
+	{
+		GameInstanceRef->HideNoteUIWidget();
 	}
 }
 

@@ -55,7 +55,7 @@ void AWorldNotes::OnPlayerEndOverlap(UPrimitiveComponent* OverlappedComponent,
 	{
 		UE_LOG(LogTemp, Display, TEXT("Player CANNOT Interact with Note"));
 		PlayerRef->bCanInteract = false;
-		GameInstanceRef->DestroyNoteUIWidget();
+		GameInstanceRef->HideNoteUIWidget();
 	}
 }
 

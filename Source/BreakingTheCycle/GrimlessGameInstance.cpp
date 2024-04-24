@@ -30,8 +30,9 @@ UGrimlessGameInstance::UGrimlessGameInstance(const FObjectInitializer& ObjectIni
 // Initialize New Game Instance and set up Inventory Widget
 void UGrimlessGameInstance::init()
 {
-	// Create Inventory reference to use later	
+	// Create InventoryUI and NoteUI reference to use later	
 	InventoryUI = CreateWidget<UUserWidget>(this, InventoryUIWidgetClass);
+	NoteUI = CreateWidget<UUserWidget>(this, NoteUIWidgetClass);
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, InventoryUI ? InventoryUI->GetName() : "Not Valid");
 }
 
@@ -42,9 +43,8 @@ void UGrimlessGameInstance::init()
 
 void UGrimlessGameInstance::ShowNoteUIWidget()
 {
-	if (!NoteUIActive)
+	if (!NoteUIActive && NoteUI != nullptr)
 	{
-		UUserWidget* NoteUI = CreateWidget<UUserWidget>(this, NoteUIWidgetClass);
 		NoteUI->AddToViewport();
 		NoteUIActive = true;
 		UE_LOG(LogTemp, Display, TEXT("Showing Note UI Widget"));
@@ -52,20 +52,20 @@ void UGrimlessGameInstance::ShowNoteUIWidget()
 	}
 }
 
-void UGrimlessGameInstance::DestroyNoteUIWidget()
+void UGrimlessGameInstance::HideNoteUIWidget()
 {
 	if (NoteUIActive)
 	{
 		// Remove All widget -----> Change later
-		UWidgetLayoutLibrary::RemoveAllWidgets(GetWorld());
+		NoteUI->RemoveFromViewport();
 		NoteUIActive = false;
-		UE_LOG(LogTemp, Display, TEXT("Destroying Note UI Widget"));
+		UE_LOG(LogTemp, Display, TEXT("Hiding Note UI Widget"));
 	}
 }
 
 void UGrimlessGameInstance::ShowInventoryUIWidget()
 {
-	if (!InventoryUIActive && InventoryUI)
+	if (!InventoryUIActive && InventoryUI != nullptr)
 	{
 		// UUserWidget* InventoryUI = CreateWidget<UUserWidget>(this, InventoryUIWidgetClass);
 		InventoryUI->AddToViewport();
