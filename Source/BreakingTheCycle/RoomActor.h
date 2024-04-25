@@ -32,6 +32,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "RoomCollision|Camera", meta = (AllowPrivateAccess = "true"))
 		FVector OriginPoint;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "RoomCollision|RotationSwing", meta = (AllowPrivateAccess = "true"))
+		float SwingTarget;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

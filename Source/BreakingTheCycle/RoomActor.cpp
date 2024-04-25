@@ -6,7 +6,7 @@
 #include "Kismet/GameplayStatics.h"
 
 // Sets default values
-ARoomActor::ARoomActor() : bPlayerInRoom(false)
+ARoomActor::ARoomActor() : bPlayerInRoom(false), SwingTarget(0.f)
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = false;
@@ -63,6 +63,7 @@ void ARoomActor::ChangeCameraOrigin(UPrimitiveComponent* OverlappedComponent,
 		bPlayerInRoom = true;
 		UE_LOG(LogTemp, Warning, TEXT("Player InRoom"));
 		CameraRef->ChangeCameraPosition(OriginPoint);
+
 	}
 }
 
@@ -75,9 +76,8 @@ void ARoomActor::AdjustCameraRotationLeft(UPrimitiveComponent* OverlappedCompone
 {
 	if (OtherActor == PlayerRef && bPlayerInRoom)
 	{
-		
 		// CameraRef->ChangeCameraPosition(OriginPoint);
-		if (CameraRef->GetActorRotation().Yaw <= 1.0) CameraRef->ChangeCameraRotation(true);
+		if (CameraRef->GetActorRotation().Yaw <= 1.0) CameraRef->ChangeCameraRotation(true, SwingTarget);
 	}
 }
 
@@ -91,6 +91,6 @@ void ARoomActor::AdjustCameraRotationRight(UPrimitiveComponent* OverlappedCompon
 	if (OtherActor == PlayerRef && bPlayerInRoom)
 	{
 		// CameraRef->ChangeCameraPosition(OriginPoint);
-		if (CameraRef->GetActorRotation().Yaw >= -1.0) CameraRef->ChangeCameraRotation(false);
+		if (CameraRef->GetActorRotation().Yaw >= -1.0) CameraRef->ChangeCameraRotation(false, SwingTarget);
 	}
 }

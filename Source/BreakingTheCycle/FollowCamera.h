@@ -22,7 +22,7 @@ public:
 		void ChangeCameraPosition(FVector origin);
 
 	UFUNCTION()
-		void ChangeCameraRotation(bool rotation);
+		void ChangeCameraRotation(bool rotation, float rotationTarget);
 
 protected:
 

@@ -46,6 +46,15 @@ public:
 	UFUNCTION(BlueprintCallable)
 	virtual void init();
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+		float TotalTime;
+	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+		float TimerRate;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		float InGameMinutes;
+
 private:
 
 	// Class Reference to Note UI and Inventory UI
@@ -53,5 +62,13 @@ private:
 	TSubclassOf<UUserWidget> InventoryUIWidgetClass;
 
 	bool InventoryUIActive;
+
+	// In Game timer
+	FTimerHandle GameTimer;
+	FTimerDelegate TimerDelegate;
+
+	// In Game timer function to be called
+	UFUNCTION()
+		void GameTimerFunction();
 
 };
