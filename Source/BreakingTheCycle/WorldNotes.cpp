@@ -16,7 +16,6 @@ AWorldNotes::AWorldNotes()
 	BoxCollider->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
 	BoxCollider->OnComponentBeginOverlap.AddDynamic(this, &AWorldNotes::OnPlayerBeginOverlap);
 	BoxCollider->OnComponentEndOverlap.AddDynamic(this, &AWorldNotes::OnPlayerEndOverlap);
-
 }
 
 // Called when the game starts or when spawned
@@ -41,7 +40,8 @@ void AWorldNotes::OnPlayerBeginOverlap(UPrimitiveComponent* OverlappedComponent,
 	{
 		UE_LOG(LogTemp, Display, TEXT("Player CAN Interact with Note"));
 		PlayerRef->bCanInteract = true;
-		// GameInstanceRef->ShowNoteUIWidget();
+
+		AddNoteIntoPlayerInventory();
 	}
 }
 
@@ -55,8 +55,13 @@ void AWorldNotes::OnPlayerEndOverlap(UPrimitiveComponent* OverlappedComponent,
 	{
 		UE_LOG(LogTemp, Display, TEXT("Player CANNOT Interact with Note"));
 		PlayerRef->bCanInteract = false;
-		GameInstanceRef->DestroyNoteUIWidget();
+		GameInstanceRef->HideNoteUIWidget();
 	}
+}
+
+void AWorldNotes::AddNoteIntoPlayerInventory()
+{
+	PlayerRef->AddNoteIntoInventory(Note, (AActor*)this);
 }
 
 // Called every frame

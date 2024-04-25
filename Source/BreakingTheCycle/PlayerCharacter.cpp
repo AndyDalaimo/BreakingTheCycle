@@ -12,7 +12,7 @@
 #include "EnhancedInputSubsystems.h"
 
 // Sets default values
-APlayerCharacter::APlayerCharacter() : bCanInteract(false)
+APlayerCharacter::APlayerCharacter() : bCanInteract(false), bInventoryActive(false)
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	// PrimaryActorTick.bCanEverTick = false;
@@ -46,10 +46,12 @@ APlayerCharacter::APlayerCharacter() : bCanInteract(false)
 
 	// Create a follow camera
 	FollowCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("FollowCamera"));
-	FollowCamera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName); // Attach the camera to the end of the boom and let the boom adjust to match the controller orientation
+	// FollowCamera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName); // Attach the camera to the end of the boom and let the boom adjust to match the controller orientation
 	FollowCamera->bUsePawnControlRotation = false; // Camera does not rotate relative to arm
 
 }
+
+
 
 // Called when the game starts or when spawned
 void APlayerCharacter::BeginPlay()
@@ -86,6 +88,9 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 		
 		// Interact
 		EnhancedInputComponent->BindAction(InteractAction, ETriggerEvent::Started, this, &APlayerCharacter::Interact);
+
+		// Inventory
+		EnhancedInputComponent->BindAction(InventoryAction, ETriggerEvent::Started, this, &APlayerCharacter::ShowInventory);
 	}
 
 }
@@ -141,5 +146,50 @@ void APlayerCharacter::Interact(const FInputActionValue& Value)
 	UE_LOG(LogTemp, Warning, TEXT("INTERACT"));
 
 	// TODO -- Somehow tell the WBP_NOTE which Note from data table to display	
-	if (bCanInteract) { GameInstanceRef->ShowNoteUIWidget(); }
+	if (bCanInteract && NoteToDestroy) 
+	{
+		// Push new note into memory
+		NoteInventory.Push(NewNote);
+		NoteToDestroy->Destroy();
+
+		// Reset temp Note
+		NewNote = FNoteStructure();
+		NoteToDestroy = nullptr;
+
+		GameInstanceRef->ShowNoteUIWidget(); 
+		return;
+	}
+	if (GameInstanceRef->NoteUIActive)
+	{
+		GameInstanceRef->HideNoteUIWidget();
+	}
+}
+
+void APlayerCharacter::ShowInventory(const FInputActionValue& Value)
+{
+	UE_LOG(LogTemp, Warning, TEXT("Show Inventory"));
+
+	if (!bCanInteract && !bInventoryActive) 
+	{ 
+		GameInstanceRef->ShowInventoryUIWidget(); 
+		GetCharacterMovement()->SetMovementMode(EMovementMode::MOVE_None);
+		bInventoryActive = true;
+	}
+	else if (bInventoryActive)
+	{
+		GameInstanceRef->HideInventoryUIWidget();
+		GetCharacterMovement()->SetMovementMode(EMovementMode::MOVE_Flying);
+		bInventoryActive = false;
+	}
+}
+
+
+// ---------------------------------------------------------------------
+// ---------------------- World Interactions ---------------------------
+// ---------------------------------------------------------------------
+
+void APlayerCharacter::AddNoteIntoInventory(FNoteStructure newNote, AActor* noteActor)
+{
+	NewNote = newNote;
+	NoteToDestroy = noteActor;
 }

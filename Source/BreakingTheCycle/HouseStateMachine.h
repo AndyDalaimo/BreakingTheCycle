@@ -4,7 +4,6 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Info.h"
-#include "NoteData.h"
 #include "HouseStateMachine.generated.h"
 
 UENUM(BlueprintType)
@@ -50,10 +49,7 @@ public:
 	
 	AHouseStateMachine();
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "NoteData")
-		UNoteData* NoteDataSet;
-
-	UPROPERTY(EditAnywhere, blueprintReadWrite, Category = "State")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "State")
 		TArray<FCurrentState> CharacterStates;
 
 	UFUNCTION(BlueprintCallable)

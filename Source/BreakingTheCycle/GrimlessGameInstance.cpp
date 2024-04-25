@@ -12,8 +12,9 @@ UGrimlessGameInstance::UGrimlessGameInstance(const FObjectInitializer& ObjectIni
 {
 	
 	static ConstructorHelpers::FClassFinder<UUserWidget> NoteUIFinder(TEXT("/Game/UI/WBP_Note"));
+	static ConstructorHelpers::FClassFinder<UUserWidget> InventoryUIFinder(TEXT("/Game/UI/WBP_Inventory"));
 
-	if (!NoteUIFinder.Succeeded())
+	if (!NoteUIFinder.Succeeded() && !InventoryUIFinder.Succeeded())
 	{
 		UE_LOG(LogTemp, Error, TEXT("UI NOT FOUND"));
 		return;
@@ -22,7 +23,17 @@ UGrimlessGameInstance::UGrimlessGameInstance(const FObjectInitializer& ObjectIni
 	{
 		UE_LOG(LogTemp, Display, TEXT("UI FOUND"));
 		NoteUIWidgetClass = NoteUIFinder.Class;
+		InventoryUIWidgetClass = InventoryUIFinder.Class;
 	}
+}
+
+// Initialize New Game Instance and set up Inventory Widget
+void UGrimlessGameInstance::init()
+{
+	// Create InventoryUI and NoteUI reference to use later	
+	InventoryUI = CreateWidget<UUserWidget>(this, InventoryUIWidgetClass);
+	NoteUI = CreateWidget<UUserWidget>(this, NoteUIWidgetClass);
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, InventoryUI ? InventoryUI->GetName() : "Not Valid");
 }
 
 
@@ -32,21 +43,75 @@ UGrimlessGameInstance::UGrimlessGameInstance(const FObjectInitializer& ObjectIni
 
 void UGrimlessGameInstance::ShowNoteUIWidget()
 {
-	if (!NoteUIActive)
+	if (!NoteUIActive && NoteUI != nullptr)
 	{
-		UUserWidget* NoteUI = CreateWidget<UUserWidget>(this, NoteUIWidgetClass);
 		NoteUI->AddToViewport();
 		NoteUIActive = true;
+		UE_LOG(LogTemp, Display, TEXT("Showing Note UI Widget"));
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, NoteUI ? NoteUI->GetName() : "Not valid");
 	}
 }
 
-void UGrimlessGameInstance::DestroyNoteUIWidget()
+void UGrimlessGameInstance::HideNoteUIWidget()
 {
 	if (NoteUIActive)
 	{
 		// Remove All widget -----> Change later
-		UWidgetLayoutLibrary::RemoveAllWidgets(GetWorld());
+		NoteUI->RemoveFromViewport();
 		NoteUIActive = false;
+		UE_LOG(LogTemp, Display, TEXT("Hiding Note UI Widget"));
 	}
 }
+
+void UGrimlessGameInstance::ShowInventoryUIWidget()
+{
+	if (!InventoryUIActive && InventoryUI != nullptr)
+	{
+		// UUserWidget* InventoryUI = CreateWidget<UUserWidget>(this, InventoryUIWidgetClass);
+		InventoryUI->AddToViewport();
+		InventoryUIActive = true;
+
+		UE_LOG(LogTemp, Display, TEXT("Showing Inventory UI Widget"));
+
+		// Reference to Player Controller
+		APlayerController* PlayerController = GetFirstLocalPlayerController();
+
+		// Set Up Input Parameters
+		// FInputModeUIOnly InputModeData;
+		FInputModeGameAndUI InputModeData;
+
+		InputModeData.SetWidgetToFocus(InventoryUI->TakeWidget());
+		InputModeData.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
+
+		// Set Input Modes
+		PlayerController->SetInputMode(InputModeData);
+		PlayerController->bShowMouseCursor = true;
+
+	}
+}
+
+void UGrimlessGameInstance::HideInventoryUIWidget()
+{
+	if (InventoryUIActive)
+	{
+		// Remove All widget -----> Change later
+		// UWidgetLayoutLibrary::RemoveAllWidgets(GetWorld());
+		InventoryUI->RemoveFromViewport();
+		InventoryUIActive = false;
+
+		UE_LOG(LogTemp, Display, TEXT("Hiding Inventory UI Widget"));
+
+		APlayerController* PlayerController = GetFirstLocalPlayerController();
+
+		// Set up input parameters for player controller in Game
+		FInputModeGameOnly InputModeData;
+		InputModeData.SetConsumeCaptureMouseDown(true);
+
+
+		// Set Input Mode
+		PlayerController->SetInputMode(InputModeData);
+		// PlayerController->SetInputMode(MouseInputData);
+		PlayerController->bShowMouseCursor = false;
+	}
+}
+

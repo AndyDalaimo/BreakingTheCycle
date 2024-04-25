@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "GrimlessGameInstance.h"
+#include "NoteData.h"
 #include "InputActionValue.h"
 #include "PlayerCharacter.generated.h"
 
@@ -15,10 +16,10 @@ class BREAKINGTHECYCLE_API APlayerCharacter : public ACharacter
 
 protected:
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	class USpringArmComponent* CameraBoom;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	class UCameraComponent* FollowCamera;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
@@ -33,6 +34,9 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	class UInputAction* InteractAction;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	class UInputAction* InventoryAction;
+
 
 public:
 	// Sets default values for this character's properties
@@ -40,6 +44,13 @@ public:
 
 	// Allow Player to Interact with Note / World Item
 	bool bCanInteract;
+
+	// Player Note Inventory
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Inventory", meta = (AllowPrivateAccess = "true"))
+		TArray<FNoteStructure> NoteInventory;
+
+	UFUNCTION()
+		void AddNoteIntoInventory(FNoteStructure newNote, AActor* noteActor);
 
 protected:
 	// Called when the game starts or when spawned
@@ -51,6 +62,8 @@ protected:
 	void Look(const FInputActionValue& Value);
 
 	void Interact(const FInputActionValue& Value);
+
+	void ShowInventory(const FInputActionValue& Value);
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
@@ -64,5 +77,10 @@ private:
 
 	// Instance to Game Instance
 	UGrimlessGameInstance* GameInstanceRef;
+
+	// Limit control to other UIs if player is searching through their inventory
+	bool bInventoryActive;
+	FNoteStructure NewNote;
+	AActor* NoteToDestroy;
 
 };
