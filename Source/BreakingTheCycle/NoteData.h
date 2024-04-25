@@ -7,6 +7,8 @@
 #include "HouseStateMachine.h"
 #include "NoteData.generated.h"
 
+#define LINE_TERMINATOR
+
 
 UENUM(BlueprintType)
 enum class ENoteType : uint8
