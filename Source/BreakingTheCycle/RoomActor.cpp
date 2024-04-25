@@ -75,8 +75,9 @@ void ARoomActor::AdjustCameraRotationLeft(UPrimitiveComponent* OverlappedCompone
 {
 	if (OtherActor == PlayerRef && bPlayerInRoom)
 	{
-		CameraRef->ChangeCameraPosition(OriginPoint);
-		CameraRef->ChangeCameraRotation(true);
+		
+		// CameraRef->ChangeCameraPosition(OriginPoint);
+		if (CameraRef->GetActorRotation().Yaw <= 1.0) CameraRef->ChangeCameraRotation(true);
 	}
 }
 
@@ -89,7 +90,7 @@ void ARoomActor::AdjustCameraRotationRight(UPrimitiveComponent* OverlappedCompon
 {
 	if (OtherActor == PlayerRef && bPlayerInRoom)
 	{
-		CameraRef->ChangeCameraPosition(OriginPoint);
-		CameraRef->ChangeCameraRotation(false);
+		// CameraRef->ChangeCameraPosition(OriginPoint);
+		if (CameraRef->GetActorRotation().Yaw >= -1.0) CameraRef->ChangeCameraRotation(false);
 	}
 }

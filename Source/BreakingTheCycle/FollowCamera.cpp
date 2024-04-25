@@ -78,8 +78,7 @@ void AFollowCamera::LocTimerFunction()
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Distance between locs: %f"), FVector::Distance(currentPos, targetLocation));
 		// this->SetActorLocationAndRotation(FMath::InterpSinIn(currentPos, targetLocation, 0.1), FQuat::Slerp(GetActorRotation().Quaternion(), FRotator(0, 0, 0).Quaternion(), .05));
-		this->SetActorLocation(FMath::InterpSinIn(currentPos, targetLocation, 0.1));
-		this->SetActorRotation(FQuat::Slerp(GetActorRotation().Quaternion(), FRotator(0, 0, 0).Quaternion(), .01));
+		this->SetActorLocationAndRotation(FMath::InterpSinIn(currentPos, targetLocation, 0.2), FQuat::Slerp(GetActorRotation().Quaternion(), FRotator(0, 0, 0).Quaternion(), .05));
 		currentPos = GetActorLocation();
 	}
 	else {
