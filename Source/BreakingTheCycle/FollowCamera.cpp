@@ -31,18 +31,18 @@ void AFollowCamera::ChangeCameraPosition(FVector origin)
 // New Camera Rotation 
 // If true, Player is on left side of the room, rotate left
 // If false, Player is on  right side of the room, rotate right
-void AFollowCamera::ChangeCameraRotation(bool rotation)
+void AFollowCamera::ChangeCameraRotation(bool rotation, float rotationTarget)
 {
 	switch (rotation)
 	{
 		case true:
-			targetRot = -10;
+			targetRot = -1.f* rotationTarget;
 			currentYaw = GetActorRotation().Yaw;
 			InterpToRotation();
 			break;
 
 		case false: 
-			targetRot = 10;
+			targetRot = rotationTarget;
 			currentYaw = GetActorRotation().Yaw;
 			InterpToRotation();
 			break;

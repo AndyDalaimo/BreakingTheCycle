@@ -8,7 +8,7 @@
 #include "Kismet/GameplayStatics.h"
 
 
-UGrimlessGameInstance::UGrimlessGameInstance(const FObjectInitializer& ObjectInitializer)
+UGrimlessGameInstance::UGrimlessGameInstance(const FObjectInitializer& ObjectInitializer) : TotalTime(0.f), InGameMinutes(3.f), TimerRate(1.f)
 {
 	
 	static ConstructorHelpers::FClassFinder<UUserWidget> NoteUIFinder(TEXT("/Game/UI/WBP_Note"));
@@ -34,6 +34,32 @@ void UGrimlessGameInstance::init()
 	InventoryUI = CreateWidget<UUserWidget>(this, InventoryUIWidgetClass);
 	NoteUI = CreateWidget<UUserWidget>(this, NoteUIWidgetClass);
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, InventoryUI ? InventoryUI->GetName() : "Not Valid");
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, NoteUI ? NoteUI->GetName() : "Not Valid");
+
+	// Trigger In Game timer to start countdown to Midnight (End game sequence)
+	TotalTime = (60.f * InGameMinutes);
+
+	TimerDelegate.BindUFunction(this, "GameTimerFunction");
+	GetWorld()->GetTimerManager().SetTimer(GameTimer, TimerDelegate, TimerRate, true);
+}
+
+
+// In game timer function. 
+// Will countdown to an end game sequence to switch AI behavior 
+// and trigger win/loss conditions for Player
+void UGrimlessGameInstance::GameTimerFunction()
+{
+	TotalTime--;
+	UE_LOG(LogTemp, Warning, TEXT("Time Left: %f"), TotalTime);
+
+	if (TotalTime <= 0)
+	{
+		GetTimerManager().ClearTimer(GameTimer);
+	}
+	if (!GameTimer.IsValid())
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Timer Cleared"));
+	}
 }
 
 
@@ -57,7 +83,7 @@ void UGrimlessGameInstance::HideNoteUIWidget()
 	if (NoteUIActive)
 	{
 		// Remove All widget -----> Change later
-		NoteUI->RemoveFromViewport();
+		NoteUI->RemoveFromParent();
 		NoteUIActive = false;
 		UE_LOG(LogTemp, Display, TEXT("Hiding Note UI Widget"));
 	}
@@ -96,7 +122,7 @@ void UGrimlessGameInstance::HideInventoryUIWidget()
 	{
 		// Remove All widget -----> Change later
 		// UWidgetLayoutLibrary::RemoveAllWidgets(GetWorld());
-		InventoryUI->RemoveFromViewport();
+		InventoryUI->RemoveFromParent();
 		InventoryUIActive = false;
 
 		UE_LOG(LogTemp, Display, TEXT("Hiding Inventory UI Widget"));
