@@ -31,7 +31,7 @@ protected:
 
 	// Call timeline smoothly transition camera to target Rotation
 	UFUNCTION()
-	void InterpToRotation(double targetYaw);
+	void InterpToRotation();
 
 
 	// Properties for in game timer

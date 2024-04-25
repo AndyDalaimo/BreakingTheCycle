@@ -37,19 +37,19 @@ void AFollowCamera::ChangeCameraRotation(bool rotation)
 			targetRot = -10;
 			currentYaw = GetActorRotation().Yaw;
 			// this->SetActorRotation(FQuat::Slerp(GetActorRotation().Quaternion(), FRotator(0, -targetRot, 0).Quaternion(), .01));
-			InterpToRotation(targetRot);
+			InterpToRotation();
 			break;
 
 		case false: 
 			targetRot = 10;
 			currentYaw = GetActorRotation().Yaw;
 			// this->SetActorRotation(FQuat::Slerp(GetActorRotation().Quaternion(), FRotator(0, 10, 0).Quaternion(), .01));
-			InterpToRotation(targetRot);
+			InterpToRotation();
 			break;
 	}
 }
 
-void AFollowCamera::InterpToRotation(double targetYaw)
+void AFollowCamera::InterpToRotation()
 {
 	GetWorld()->GetTimerManager().ClearTimer(MovementTimer);
 	TimerDelegate.BindUFunction(this, "RotTimerFunction");
@@ -73,9 +73,13 @@ void AFollowCamera::RotTimerFunction()
 void AFollowCamera::LocTimerFunction()
 {
 	UE_LOG(LogTemp, Warning, TEXT("Loc Timer Function Called"));
-	if (currentPos != targetLocation)
+	// if (currentPos != targetLocation)
+	if (FVector::Distance(currentPos, targetLocation) > 1.0 || !GetActorRotation().IsNearlyZero(0.3))
 	{
-		this->SetActorLocationAndRotation(FMath::InterpSinIn(currentPos, targetLocation, 0.1), FQuat::Slerp(GetActorRotation().Quaternion(), FRotator(0, 0, 0).Quaternion(), .05));
+		UE_LOG(LogTemp, Warning, TEXT("Distance between locs: %f"), FVector::Distance(currentPos, targetLocation));
+		// this->SetActorLocationAndRotation(FMath::InterpSinIn(currentPos, targetLocation, 0.1), FQuat::Slerp(GetActorRotation().Quaternion(), FRotator(0, 0, 0).Quaternion(), .05));
+		this->SetActorLocation(FMath::InterpSinIn(currentPos, targetLocation, 0.1));
+		this->SetActorRotation(FQuat::Slerp(GetActorRotation().Quaternion(), FRotator(0, 0, 0).Quaternion(), .01));
 		currentPos = GetActorLocation();
 	}
 	else {
