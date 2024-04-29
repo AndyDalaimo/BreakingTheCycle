@@ -22,12 +22,13 @@ public:
 		void ChangeCameraPosition(FVector origin);
 
 	UFUNCTION()
-		void ChangeCameraRotation(bool rotation, float rotationTarget);
+		void ChangeCameraRotation(bool rotation, float rotationTarget, FVector origin);
 
 protected:
 
-
+	// Camera Rotation Properties
 	double targetRot;
+	const double cameraPitch = -10.0;
 
 	// Call timeline smoothly transition camera to target Rotation
 	UFUNCTION()
@@ -41,6 +42,7 @@ protected:
 	double currentYaw;
 	FVector currentPos;
 	FVector targetLocation;
+
 	// Interpolate to target rotation
 	UFUNCTION()
 	void RotTimerFunction();

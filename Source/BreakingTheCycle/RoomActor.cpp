@@ -74,10 +74,11 @@ void ARoomActor::AdjustCameraRotationLeft(UPrimitiveComponent* OverlappedCompone
 	bool bFromSweep,
 	const FHitResult& SweepResult)
 {
-	if (OtherActor == PlayerRef && bPlayerInRoom)
+	// if (OtherActor == PlayerRef && bPlayerInRoom)
+	if (OtherActor == PlayerRef)
 	{
-		// CameraRef->ChangeCameraPosition(OriginPoint);
-		if (CameraRef->GetActorRotation().Yaw <= 1.0) CameraRef->ChangeCameraRotation(true, SwingTarget);
+		if (CameraRef->GetActorRotation().Yaw <= 1.0) CameraRef->ChangeCameraRotation(true, SwingTarget, OriginPoint);
+		// else CameraRef->ChangeCameraPosition(OriginPoint);
 	}
 }
 
@@ -88,9 +89,10 @@ void ARoomActor::AdjustCameraRotationRight(UPrimitiveComponent* OverlappedCompon
 	bool bFromSweep,
 	const FHitResult& SweepResult)
 {
-	if (OtherActor == PlayerRef && bPlayerInRoom)
+	// if (OtherActor == PlayerRef && bPlayerInRoom)
+	if (OtherActor == PlayerRef)
 	{
-		// CameraRef->ChangeCameraPosition(OriginPoint);
-		if (CameraRef->GetActorRotation().Yaw >= -1.0) CameraRef->ChangeCameraRotation(false, SwingTarget);
+		if (CameraRef->GetActorRotation().Yaw >= -1.0) CameraRef->ChangeCameraRotation(false, SwingTarget, OriginPoint);
+		// else CameraRef->ChangeCameraPosition(OriginPoint);
 	}
 }

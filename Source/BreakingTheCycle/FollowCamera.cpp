@@ -31,8 +31,9 @@ void AFollowCamera::ChangeCameraPosition(FVector origin)
 // New Camera Rotation 
 // If true, Player is on left side of the room, rotate left
 // If false, Player is on  right side of the room, rotate right
-void AFollowCamera::ChangeCameraRotation(bool rotation, float rotationTarget)
+void AFollowCamera::ChangeCameraRotation(bool rotation, float rotationTarget, FVector origin)
 {
+	targetLocation = origin;
 	switch (rotation)
 	{
 		case true:
@@ -61,7 +62,8 @@ void AFollowCamera::RotTimerFunction()
 	// UE_LOG(LogTemp, Warning, TEXT("Rot Timer Function Called"));
 	if (currentYaw <= FMath::Abs(targetRot - 1))
 	{
-		this->SetActorRotation(FQuat::Slerp(GetActorRotation().Quaternion(), FRotator(0, targetRot, 0).Quaternion(), .05));
+		this->SetActorRotation(FQuat::Slerp(GetActorRotation().Quaternion(), FRotator(cameraPitch, targetRot, 0).Quaternion(), .05));
+		// this->SetActorLocationAndRotation(FMath::InterpSinIn(currentPos, targetLocation, 0.17), FQuat::Slerp(GetActorRotation().Quaternion(), FRotator(cameraPitch, targetRot, 0).Quaternion(), .05));
 		currentYaw = GetActorRotation().Yaw;
 	}
 	else {
@@ -75,7 +77,7 @@ void AFollowCamera::LocTimerFunction()
 	if (FVector::Distance(currentPos, targetLocation) > 1.0 || !GetActorRotation().IsNearlyZero(0.3))
 	{
 		// UE_LOG(LogTemp, Warning, TEXT("Distance between locs: %f"), FVector::Distance(currentPos, targetLocation));
-		this->SetActorLocationAndRotation(FMath::InterpSinIn(currentPos, targetLocation, 0.17), FQuat::Slerp(GetActorRotation().Quaternion(), FRotator(0, 0, 0).Quaternion(), .05));
+		this->SetActorLocationAndRotation(FMath::InterpSinIn(currentPos, targetLocation, 0.17), FQuat::Slerp(GetActorRotation().Quaternion(), FRotator(cameraPitch, 0, 0).Quaternion(), .05));
 		currentPos = GetActorLocation();
 	}
 	else {
