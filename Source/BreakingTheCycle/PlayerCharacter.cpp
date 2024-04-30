@@ -12,7 +12,7 @@
 #include "EnhancedInputSubsystems.h"
 
 // Sets default values
-APlayerCharacter::APlayerCharacter() : bCanInteract(false), bInventoryActive(false)
+APlayerCharacter::APlayerCharacter() : bCanInteract(false), bCanDistract(false), bInventoryActive(false)
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	// PrimaryActorTick.bCanEverTick = false;
@@ -145,7 +145,6 @@ void APlayerCharacter::Interact(const FInputActionValue& Value)
 {
 	UE_LOG(LogTemp, Warning, TEXT("INTERACT"));
 
-	// TODO -- Somehow tell the WBP_NOTE which Note from data table to display	
 	if (bCanInteract && NoteToDestroy) 
 	{
 		// Push new note into memory

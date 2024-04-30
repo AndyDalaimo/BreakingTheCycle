@@ -15,6 +15,7 @@ AWorldDistraction::AWorldDistraction()
 	BoxCollider = CreateDefaultSubobject<UBoxComponent>(TEXT("BoxCollider"));
 	BoxCollider->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
 	BoxCollider->OnComponentBeginOverlap.AddDynamic(this, &AWorldDistraction::OnBeginOverlap);
+	BoxCollider->OnComponentEndOverlap.AddDynamic(this, &AWorldDistraction::OnEndOverlap);
 
 	DistractionLocation = CreateDefaultSubobject<UArrowComponent>(TEXT("DistractionLocation"));
 	DistractionLocation->SetupAttachment(RootComponent);
@@ -61,6 +62,19 @@ void AWorldDistraction::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent,
 	{
 		// TODO -- Player changes the distracted state when they want to i.e. on input
 		DistractedState = EDistractedState::DISTRACTED;
+		PlayerRef->bCanDistract = true;
+	}
+}
+
+void AWorldDistraction::OnEndOverlap(UPrimitiveComponent* OverlappedComponent, 
+	AActor* OtherActor,
+	UPrimitiveComponent* OtherComp, 
+	int32 OtherBodyIndex)
+{
+	if (OtherActor == PlayerRef)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Player has left distraction zone"));
+		PlayerRef->bCanDistract = false;
 	}
 }
 

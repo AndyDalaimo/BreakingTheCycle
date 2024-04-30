@@ -44,6 +44,7 @@ public:
 
 	// Allow Player to Interact with Note / World Item
 	bool bCanInteract;
+	bool bCanDistract;
 
 	// Player Note Inventory
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Inventory", meta = (AllowPrivateAccess = "true"))
@@ -80,7 +81,12 @@ private:
 
 	// Limit control to other UIs if player is searching through their inventory
 	bool bInventoryActive;
+
+	// Note Interaction
 	FNoteStructure NewNote;
 	AActor* NoteToDestroy;
+
+	// Distraction interation
+
 
 };

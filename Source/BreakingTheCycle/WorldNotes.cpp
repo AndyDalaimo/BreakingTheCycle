@@ -39,9 +39,9 @@ void AWorldNotes::OnPlayerBeginOverlap(UPrimitiveComponent* OverlappedComponent,
 	if (OtherActor == PlayerRef && OtherComp)
 	{
 		UE_LOG(LogTemp, Display, TEXT("Player CAN Interact with Note"));
+		AddNoteIntoPlayerInventory();
 		PlayerRef->bCanInteract = true;
 
-		AddNoteIntoPlayerInventory();
 	}
 }
 
