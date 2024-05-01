@@ -158,6 +158,11 @@ void APlayerCharacter::Interact(const FInputActionValue& Value)
 		GameInstanceRef->ShowNoteUIWidget(); 
 		return;
 	}
+	if (bCanDistract)
+	{
+		// Change state of this distraction Actor
+		
+	}
 	if (GameInstanceRef->NoteUIActive)
 	{
 		GameInstanceRef->HideNoteUIWidget();
@@ -191,4 +196,9 @@ void APlayerCharacter::AddNoteIntoInventory(FNoteStructure newNote, AActor* note
 {
 	NewNote = newNote;
 	NoteToDestroy = noteActor;
+}
+
+void APlayerCharacter::ChangeDistractionState(FString distractionName)
+{
+	DistractionToTrigger = distractionName;
 }

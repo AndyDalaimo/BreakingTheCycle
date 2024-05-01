@@ -52,6 +52,10 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "State")
 		TArray<FCurrentState> CharacterStates;
 
+	// Map of all distractions to reference to individual events
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "State|WorldDistrations", meta = (AllowPrivateAccess = "true"))
+		TMap<FString, FString> DistractionEvents;
+
 	UFUNCTION(BlueprintCallable)
 		void ChangeCharacterState(FCurrentState newState);
 

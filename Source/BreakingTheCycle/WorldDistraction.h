@@ -38,15 +38,19 @@ public:
 	// Sets default values for this actor's properties
 	AWorldDistraction();
 
-	UPROPERTY(EditAnywhere, Category = "AI", meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI", meta = (AllowPrivateAccess = "true"))
 		EDistractedState DistractedState;
 
 	UPROPERTY(EditAnywhere, Category = "AI", meta = (AllowPrivateAccess = "true"))
 		ECharacterName NPCToDistract;
+
+	UPROPERTY(EditAnywhere, Category = "AI|PlayerInteraction", meta = (AllowPrivateAccess = "true"))
+		FString DistractionName;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-
+	
 	// Overlap Event When Player is in range of Distraction Object
 	UFUNCTION()
 		void OnBeginOverlap(UPrimitiveComponent* OverlappedComponent,
@@ -63,6 +67,10 @@ protected:
 			UPrimitiveComponent* OtherComp,
 			int32 OtherBodyIndex);
 
+	UFUNCTION(BlueprintNativeEvent)
+		void PlayerTriggeredEventState();
+	void PlayerTriggeredEventState_Implementation() {};
+
 	// Reference to Player
 	APlayerCharacter* PlayerRef;
 
@@ -71,6 +79,7 @@ protected:
 
 	// Reference to HouseStateMachine
 	AHouseStateMachine* HouseStateRef;
+
 
 public:	
 	// Called every frame

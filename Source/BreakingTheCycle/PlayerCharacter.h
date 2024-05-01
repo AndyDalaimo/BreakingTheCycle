@@ -53,6 +53,11 @@ public:
 	UFUNCTION()
 		void AddNoteIntoInventory(FNoteStructure newNote, AActor* noteActor);
 
+	UFUNCTION()
+		void ChangeDistractionState(FString distractionName);
+
+
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -87,6 +92,6 @@ private:
 	AActor* NoteToDestroy;
 
 	// Distraction interation
-
+	FString DistractionToTrigger;
 
 };

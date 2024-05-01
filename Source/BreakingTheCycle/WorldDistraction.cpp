@@ -60,8 +60,9 @@ void AWorldDistraction::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent,
 	}
 	else if (OtherActor == PlayerRef)
 	{
-		// TODO -- Player changes the distracted state when they want to i.e. on input
-		DistractedState = EDistractedState::DISTRACTED;
+		// Call BlueprintEvent for this Actor's Distraction Event
+		PlayerTriggeredEventState();
+		PlayerRef->ChangeDistractionState(DistractionName);
 		PlayerRef->bCanDistract = true;
 	}
 }
