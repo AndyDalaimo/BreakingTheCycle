@@ -61,7 +61,7 @@ void AWorldDistraction::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent,
 	else if (OtherActor == PlayerRef)
 	{
 		// Call BlueprintEvent for this Actor's Distraction Event
-		PlayerTriggeredEventState();
+		// PlayerTriggeredEventState();
 		PlayerRef->ChangeDistractionState(DistractionName);
 		PlayerRef->bCanDistract = true;
 	}
@@ -76,6 +76,7 @@ void AWorldDistraction::OnEndOverlap(UPrimitiveComponent* OverlappedComponent,
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Player has left distraction zone"));
 		PlayerRef->bCanDistract = false;
+		PlayerRef->ChangeDistractionState("");
 	}
 }
 

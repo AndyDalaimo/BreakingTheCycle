@@ -9,6 +9,9 @@
 #include "InputActionValue.h"
 #include "PlayerCharacter.generated.h"
 
+DECLARE_DELEGATE(FOnDistractionStateDelegate);
+
+
 UCLASS()
 class BREAKINGTHECYCLE_API APlayerCharacter : public ACharacter
 {
@@ -46,6 +49,11 @@ public:
 	bool bCanInteract;
 	bool bCanDistract;
 
+	// Delegate to be broadcasted to DistractionManager
+	FOnDistractionStateDelegate OnDistractionStateChanged;
+	// Distraction interation
+	FString DistractionToTrigger;
+
 	// Player Note Inventory
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Inventory", meta = (AllowPrivateAccess = "true"))
 		TArray<FNoteStructure> NoteInventory;
@@ -55,6 +63,9 @@ public:
 
 	UFUNCTION()
 		void ChangeDistractionState(FString distractionName);
+
+	UFUNCTION()
+		void HandleDistractionEvent();
 
 
 
@@ -91,7 +102,5 @@ private:
 	FNoteStructure NewNote;
 	AActor* NoteToDestroy;
 
-	// Distraction interation
-	FString DistractionToTrigger;
 
 };

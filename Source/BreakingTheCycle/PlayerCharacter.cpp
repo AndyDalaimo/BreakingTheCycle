@@ -161,6 +161,7 @@ void APlayerCharacter::Interact(const FInputActionValue& Value)
 	if (bCanDistract)
 	{
 		// Change state of this distraction Actor
+		HandleDistractionEvent();
 		
 	}
 	if (GameInstanceRef->NoteUIActive)
@@ -201,4 +202,9 @@ void APlayerCharacter::AddNoteIntoInventory(FNoteStructure newNote, AActor* note
 void APlayerCharacter::ChangeDistractionState(FString distractionName)
 {
 	DistractionToTrigger = distractionName;
+}
+
+void APlayerCharacter::HandleDistractionEvent()
+{
+	OnDistractionStateChanged.ExecuteIfBound();
 }
