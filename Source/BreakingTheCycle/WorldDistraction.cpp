@@ -30,6 +30,8 @@ void AWorldDistraction::BeginPlay()
 	HouseStateRef = Cast<AHouseStateMachine>(UGameplayStatics::GetActorOfClass(GetWorld(), AHouseStateMachine::StaticClass()));
 
 	PlayerRef = Cast<APlayerCharacter>(GetWorld()->GetFirstPlayerController()->GetPawn());
+
+	GameInstanceRef = Cast<UGrimlessGameInstance>(GetWorld()->GetGameInstance());
 	
 }
 
@@ -62,6 +64,7 @@ void AWorldDistraction::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent,
 	{
 		// Call BlueprintEvent for this Actor's Distraction Event
 		// PlayerTriggeredEventState();
+		GameInstanceRef->ShowInteractUIWidget();
 		PlayerRef->ChangeDistractionState(DistractionName);
 		PlayerRef->bCanDistract = true;
 	}
@@ -75,6 +78,7 @@ void AWorldDistraction::OnEndOverlap(UPrimitiveComponent* OverlappedComponent,
 	if (OtherActor == PlayerRef)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Player has left distraction zone"));
+		GameInstanceRef->HideInteractUIWidget();
 		PlayerRef->bCanDistract = false;
 		PlayerRef->ChangeDistractionState("");
 	}

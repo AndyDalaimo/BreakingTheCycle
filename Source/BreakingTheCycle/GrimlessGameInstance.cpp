@@ -13,8 +13,9 @@ UGrimlessGameInstance::UGrimlessGameInstance(const FObjectInitializer& ObjectIni
 	
 	static ConstructorHelpers::FClassFinder<UUserWidget> NoteUIFinder(TEXT("/Game/UI/WBP_Note"));
 	static ConstructorHelpers::FClassFinder<UUserWidget> InventoryUIFinder(TEXT("/Game/UI/WBP_Inventory"));
+	static ConstructorHelpers::FClassFinder<UUserWidget> InteractUIFinder(TEXT("/Game/UI/WBP_Interact"));
 
-	if (!NoteUIFinder.Succeeded() && !InventoryUIFinder.Succeeded())
+	if (!NoteUIFinder.Succeeded() && !InventoryUIFinder.Succeeded() && !InteractUIFinder.Succeeded())
 	{
 		UE_LOG(LogTemp, Error, TEXT("UI NOT FOUND"));
 		return;
@@ -24,6 +25,7 @@ UGrimlessGameInstance::UGrimlessGameInstance(const FObjectInitializer& ObjectIni
 		UE_LOG(LogTemp, Display, TEXT("UI FOUND"));
 		NoteUIWidgetClass = NoteUIFinder.Class;
 		InventoryUIWidgetClass = InventoryUIFinder.Class;
+		InteractUIWidgetClass = InteractUIFinder.Class;
 	}
 }
 
@@ -33,8 +35,11 @@ void UGrimlessGameInstance::init()
 	// Create InventoryUI and NoteUI reference to use later	
 	InventoryUI = CreateWidget<UUserWidget>(this, InventoryUIWidgetClass);
 	NoteUI = CreateWidget<UUserWidget>(this, NoteUIWidgetClass);
+	InteractUI = CreateWidget<UUserWidget>(this, InteractUIWidgetClass);
+
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, InventoryUI ? InventoryUI->GetName() : "Not Valid");
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, NoteUI ? NoteUI->GetName() : "Not Valid");
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, InteractUI ? InteractUI->GetName() : "Not Valid");
 
 	// Trigger In Game timer to start countdown to Midnight (End game sequence)
 	TotalTime = (60.f * InGameMinutes);
@@ -87,6 +92,18 @@ void UGrimlessGameInstance::HideNoteUIWidget()
 		NoteUIActive = false;
 		// UE_LOG(LogTemp, Display, TEXT("Hiding Note UI Widget"));
 	}
+}
+
+void UGrimlessGameInstance::ShowInteractUIWidget()
+{
+	if (InteractUI != nullptr) InteractUI->AddToViewport();
+}
+
+
+
+void UGrimlessGameInstance::HideInteractUIWidget()
+{
+	InteractUI->RemoveFromParent();
 }
 
 void UGrimlessGameInstance::ShowInventoryUIWidget()

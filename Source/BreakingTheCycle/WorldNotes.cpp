@@ -39,6 +39,7 @@ void AWorldNotes::OnPlayerBeginOverlap(UPrimitiveComponent* OverlappedComponent,
 	if (OtherActor == PlayerRef && OtherComp)
 	{
 		UE_LOG(LogTemp, Display, TEXT("Player CAN Interact with Note"));
+		GameInstanceRef->ShowInteractUIWidget();
 		AddNoteIntoPlayerInventory();
 		PlayerRef->bCanInteract = true;
 
@@ -56,6 +57,7 @@ void AWorldNotes::OnPlayerEndOverlap(UPrimitiveComponent* OverlappedComponent,
 		UE_LOG(LogTemp, Display, TEXT("Player CANNOT Interact with Note"));
 		PlayerRef->bCanInteract = false;
 		GameInstanceRef->HideNoteUIWidget();
+		GameInstanceRef->HideInteractUIWidget();
 	}
 }
 

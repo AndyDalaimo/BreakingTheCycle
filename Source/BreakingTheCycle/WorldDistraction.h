@@ -7,6 +7,7 @@
 #include "HouseCharacter.h"
 #include "PlayerCharacter.h"
 #include "HouseStateMachine.h"
+#include "GrimlessGameInstance.h"
 #include "Components/BoxComponent.h"
 #include "Components/ArrowComponent.h"
 #include "WorldDistraction.generated.h"
@@ -79,6 +80,9 @@ protected:
 
 	// Reference to HouseStateMachine
 	AHouseStateMachine* HouseStateRef;
+
+	// Reference to Game Instance
+	UGrimlessGameInstance* GameInstanceRef;
 
 
 public:	

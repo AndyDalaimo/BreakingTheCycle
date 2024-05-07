@@ -26,6 +26,10 @@ public:
 	// Note Reference to update when player picks up a new Note
 	UPROPERTY()
 	UUserWidget* NoteUI;
+	
+	// Note Reference to update when player picks up a new Note
+	UPROPERTY()
+	UUserWidget* InteractUI;
 
 	bool NoteUIActive;
 
@@ -36,6 +40,14 @@ public:
 	// Destroy Note UI and reset NoteUIActive
 	UFUNCTION(BlueprintCallable)
 		void HideNoteUIWidget();
+	
+	// Show Interact UI
+	UFUNCTION(BlueprintCallable)
+		void ShowInteractUIWidget();
+	
+	// Hide Interact UI
+	UFUNCTION(BlueprintCallable)
+		void HideInteractUIWidget();
 	
 	// Create Note UI and Show correct note on screen#
 	UFUNCTION(BlueprintCallable)
@@ -64,6 +76,7 @@ private:
 
 	TSubclassOf<UUserWidget> NoteUIWidgetClass;
 	TSubclassOf<UUserWidget> InventoryUIWidgetClass;
+	TSubclassOf<UUserWidget> InteractUIWidgetClass;
 
 	bool InventoryUIActive;
 

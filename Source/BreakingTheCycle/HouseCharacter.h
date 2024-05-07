@@ -10,6 +10,14 @@
 #include "NPC_AIController.h"
 #include "HouseCharacter.generated.h"
 
+UENUM(BlueprintType)
+enum class EAnimIdleState : uint8
+{
+	IDLE = 0 UMETA(DisplayName = "Idle"),
+	CONVERSATION = 1 UMETA(DisplayName = "Conversation"),
+	NERVOUS = 2 UMETA(DisplayName = "Nervous")
+};
+
 UCLASS()
 class BREAKINGTHECYCLE_API AHouseCharacter : public ACharacter
 {
@@ -37,6 +45,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI", meta = (AllowPrivateAccess = "true"))
 		TArray<FVector> TargetLocations;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI", meta = (AllowPrivateAccess = "true"))
+		EAnimIdleState AnimIdleState;
 
 	// Reference to its own AI Controller
 	UPROPERTY()
