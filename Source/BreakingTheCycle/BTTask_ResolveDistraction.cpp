@@ -35,7 +35,6 @@ EBTNodeResult::Type UBTTask_ResolveDistraction::ExecuteTask(UBehaviorTreeCompone
 			// Finish with Success
 			FinishLatentTask(OwnerComp, EBTNodeResult::Succeeded);
 			return EBTNodeResult::Succeeded;
-
 		}
 	}
 

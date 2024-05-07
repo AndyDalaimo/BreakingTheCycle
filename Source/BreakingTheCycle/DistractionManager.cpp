@@ -42,9 +42,11 @@ void ADistractionManager::DistractionChangedEventFunction()
 			if (Cast<AWorldDistraction>(dist)->DistractedState == EDistractedState::DISTRACTED)
 			{
 				Cast<AWorldDistraction>(dist)->DistractedState = EDistractedState::NEUTRAL;
+				Cast<AWorldDistraction>(dist)->ResolvedEventState();
 			}
 			else {
 				Cast<AWorldDistraction>(dist)->DistractedState = EDistractedState::DISTRACTED;
+				Cast<AWorldDistraction>(dist)->PlayerTriggeredEventState();
 			}
 		}
 	}

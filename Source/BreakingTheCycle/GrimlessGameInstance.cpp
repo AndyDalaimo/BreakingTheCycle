@@ -96,7 +96,11 @@ void UGrimlessGameInstance::HideNoteUIWidget()
 
 void UGrimlessGameInstance::ShowInteractUIWidget()
 {
-	if (InteractUI != nullptr) InteractUI->AddToViewport();
+	if (InteractUI != nullptr)
+	{
+		InteractUI->AddToViewport();
+		InteractUI->SetVisibility(ESlateVisibility::Visible);
+	}
 }
 
 
@@ -104,6 +108,8 @@ void UGrimlessGameInstance::ShowInteractUIWidget()
 void UGrimlessGameInstance::HideInteractUIWidget()
 {
 	InteractUI->RemoveFromParent();
+	InteractUI->SetVisibility(ESlateVisibility::Hidden);
+
 }
 
 void UGrimlessGameInstance::ShowInventoryUIWidget()

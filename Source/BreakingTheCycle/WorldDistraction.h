@@ -48,6 +48,14 @@ public:
 	UPROPERTY(EditAnywhere, Category = "AI|PlayerInteraction", meta = (AllowPrivateAccess = "true"))
 		FString DistractionName;
 
+	UFUNCTION(BlueprintNativeEvent)
+		void PlayerTriggeredEventState();
+	void PlayerTriggeredEventState_Implementation() {};	
+	
+	UFUNCTION(BlueprintNativeEvent)
+		void ResolvedEventState();
+	void ResolvedEventState_Implementation() {};
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -68,9 +76,6 @@ protected:
 			UPrimitiveComponent* OtherComp,
 			int32 OtherBodyIndex);
 
-	UFUNCTION(BlueprintNativeEvent)
-		void PlayerTriggeredEventState();
-	void PlayerTriggeredEventState_Implementation() {};
 
 	// Reference to Player
 	APlayerCharacter* PlayerRef;
