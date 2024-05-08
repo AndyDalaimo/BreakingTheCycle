@@ -46,6 +46,8 @@ void ANoteSpawner::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent,
 	{
 		if (CharactersToLookFor.Contains(Cast<AHouseCharacter>(OtherActor)->CharacterName))
 		{
+			// Initiate conversation event in NPC BP
+			Cast<AHouseCharacter>(OtherActor)->InitiateNPCConversationEvent();
 			DropNoteEvent(OtherActor);
 		}
 	}
@@ -59,6 +61,8 @@ void ANoteSpawner::OnEndOverlap(UPrimitiveComponent* OverlappedComponent,
 {
 	if (Cast<AHouseCharacter>(OtherActor) && OtherComp)
 	{
+		// End conversation event in NPC BP
+		Cast<AHouseCharacter>(OtherActor)->EndNPCConversationEvent();
 		CharactersToLookFor.Emplace(Cast<AHouseCharacter>(OtherActor)->CharacterName, false);
 	}
 }
@@ -86,7 +90,7 @@ void ANoteSpawner::DropNoteEvent(AActor* actor)
 		if (NoteBlueprintClass != nullptr)
 		{
 			BlueprintToSpawn = GetWorld()->SpawnActor<AActor>(NoteBlueprintClass, GetActorLocation(), FRotator::ZeroRotator, SpawnInfo);
-			this->Destroy();
+			this->SetLifeSpan(5.f);
 		}
 	}
 	else {

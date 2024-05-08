@@ -40,6 +40,14 @@ public:
 	UFUNCTION(BlueprintCallable)
 		ENPCState GetThisCharacterState() const;
 
+	UFUNCTION(BlueprintNativeEvent)
+		void InitiateNPCConversationEvent();
+	void InitiateNPCConversationEvent_Implementation() {};
+
+	UFUNCTION(BlueprintNativeEvent)
+		void EndNPCConversationEvent();
+	void EndNPCConversationEvent_Implementation() {};
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Name", meta = (AllowPrivateAcces = "true"))
 		ECharacterName CharacterName;
 
