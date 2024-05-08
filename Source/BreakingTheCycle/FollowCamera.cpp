@@ -37,7 +37,7 @@ void AFollowCamera::ChangeCameraRotation(bool rotation, float rotationTarget, FV
 	switch (rotation)
 	{
 		case true:
-			targetRot = -1.f* rotationTarget;
+			targetRot = -1.f * rotationTarget;
 			currentYaw = GetActorRotation().Yaw;
 			InterpToRotation();
 			break;
@@ -63,7 +63,6 @@ void AFollowCamera::RotTimerFunction()
 	if (currentYaw <= FMath::Abs(targetRot - 1))
 	{
 		this->SetActorRotation(FQuat::Slerp(GetActorRotation().Quaternion(), FRotator(cameraPitch, targetRot, 0).Quaternion(), .05));
-		// this->SetActorLocationAndRotation(FMath::InterpSinIn(currentPos, targetLocation, 0.17), FQuat::Slerp(GetActorRotation().Quaternion(), FRotator(cameraPitch, targetRot, 0).Quaternion(), .05));
 		currentYaw = GetActorRotation().Yaw;
 	}
 	else {
