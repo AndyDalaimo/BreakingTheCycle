@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "HouseCharacter.h"
+#include "GrimlessGameInstance.h"
 #include "Components/BoxComponent.h"
 #include "Chandelier.generated.h"
 
@@ -25,9 +26,16 @@ public:
 	// Sets default values for this actor's properties
 	AChandelier();
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite , Category = EndSequence)
+		bool bEndSequenceTriggered;
+
 	UFUNCTION(BlueprintNativeEvent)
-		void CharacterInteractionEvent();
-	void CharacterInteractionEvent_Implementation() { };
+		void CharacterInteractionEvent(ECharacterName name);
+	void CharacterInteractionEvent_Implementation(ECharacterName name) { };
+
+	UFUNCTION()
+		void InGameTimerEndedEvent();
+
 
 protected:
 	// Called when the game starts or when spawned
@@ -44,5 +52,7 @@ protected:
 
 private:
 	class AHouseCharacter* NPCRef;
+	
+	class UGrimlessGameInstance* GameInstanceRef;
 
 };

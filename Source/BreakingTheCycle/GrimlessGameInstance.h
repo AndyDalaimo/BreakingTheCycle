@@ -7,6 +7,8 @@
 #include "Blueprint/UserWidget.h"
 #include "GrimlessGameInstance.generated.h"
 
+DECLARE_DELEGATE(FOnEndTimerDelegate);
+
 /**
  * 
  */
@@ -69,6 +71,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		float InGameMinutes;
+
+	// Event broadcasted to actors indicating the in game timer has ended
+	FOnEndTimerDelegate OnEndTimerEvent;
 
 private:
 

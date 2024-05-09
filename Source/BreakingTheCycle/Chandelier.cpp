@@ -19,11 +19,17 @@ AChandelier::AChandelier()
 
 }
 
+
+
 // Called when the game starts or when spawned
 void AChandelier::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	GameInstanceRef = Cast<UGrimlessGameInstance>(GetWorld()->GetGameInstance());
+
+	if (GameInstanceRef != nullptr) GameInstanceRef->OnEndTimerEvent.BindUObject(this, &AChandelier::InGameTimerEndedEvent);
+
 }
 
 
@@ -47,13 +53,20 @@ void AChandelier::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent,
 		if (NPCRef->CharacterName == ECharacterName::SINGER)
 		{
 			UE_LOG(LogTemp, Warning, TEXT("This is the Singer"));
+			CharacterInteractionEvent(NPCRef->CharacterName);
 		}
 		else if (NPCRef->CharacterName == ECharacterName::NOBLEMAN)
 		{
 			UE_LOG(LogTemp, Warning, TEXT("This is the Nobleman who will die"));
+			CharacterInteractionEvent(NPCRef->CharacterName);
 
 		}
 	}
 }
 
 
+// Bound Delegate event that will trigger when the In Game timer has ended
+void AChandelier::InGameTimerEndedEvent()
+{
+	bEndSequenceTriggered = true;
+}

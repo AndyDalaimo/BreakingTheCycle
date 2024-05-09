@@ -64,6 +64,7 @@ void UGrimlessGameInstance::GameTimerFunction()
 	if (!GameTimer.IsValid())
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Timer Cleared"));
+		OnEndTimerEvent.ExecuteIfBound();
 	}
 }
 
