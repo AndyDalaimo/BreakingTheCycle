@@ -46,10 +46,9 @@ void AChandelier::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent,
 	bool bFromSweep, 
 	const FHitResult& SweepResult)
 {
-	NPCRef = CastChecked<AHouseCharacter>(OtherActor);
-
-	if (NPCRef != nullptr)
+	if (Cast<AHouseCharacter>(OtherActor))
 	{
+		NPCRef = Cast<AHouseCharacter>(OtherActor);
 		if (NPCRef->CharacterName == ECharacterName::SINGER)
 		{
 			UE_LOG(LogTemp, Warning, TEXT("This is the Singer"));

@@ -57,7 +57,10 @@ void AWorldDistraction::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent,
 
 			// Update Distraction Location and reset state for Distraction Actor
 			NPC->DistractionLocation = this->DistractionLocation->GetComponentLocation();
-			DistractedState = EDistractedState::NEUTRAL;
+			// DistractedState = EDistractedState::NEUTRAL;
+			// 
+			// !!!!!! Set a delay to resolve this state after the character reaches the distracted location !!!!!
+			PlayerRef->HandleDistractionEvent();
 		}
 	}
 	else if (OtherActor == PlayerRef)
