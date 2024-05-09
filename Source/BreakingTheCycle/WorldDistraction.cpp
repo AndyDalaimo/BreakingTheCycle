@@ -42,8 +42,9 @@ void AWorldDistraction::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent,
 	bool bFromSweep, 
 	const FHitResult& SweepResult)
 {
-	if (OtherComp && PlayerRef != OtherActor)
+	if (OtherComp && PlayerRef != OtherActor && !bInteracting)
 	{
+		bInteracting = true;
 		NPC = Cast<AHouseCharacter>(OtherActor);
 		if (DistractedState == EDistractedState::DISTRACTED && NPC->CharacterName == NPCToDistract)
 		{
@@ -57,14 +58,15 @@ void AWorldDistraction::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent,
 
 			// Update Distraction Location and reset state for Distraction Actor
 			NPC->DistractionLocation = this->DistractionLocation->GetComponentLocation();
-			// DistractedState = EDistractedState::NEUTRAL;
-			// 
+			DistractedState = EDistractedState::NEUTRAL;
+
 			// !!!!!! Set a delay to resolve this state after the character reaches the distracted location !!!!!
-			PlayerRef->HandleDistractionEvent();
+			this->ResolvedEventState();
 		}
 	}
-	else if (OtherActor == PlayerRef)
+	else if (OtherActor == PlayerRef && !bInteracting)
 	{
+		bInteracting = true;
 		// Call BlueprintEvent for this Actor's Distraction Event
 		// PlayerTriggeredEventState();
 		GameInstanceRef->ShowInteractUIWidget();
@@ -78,12 +80,16 @@ void AWorldDistraction::OnEndOverlap(UPrimitiveComponent* OverlappedComponent,
 	UPrimitiveComponent* OtherComp, 
 	int32 OtherBodyIndex)
 {
-	if (OtherActor == PlayerRef)
+	if (OtherActor == PlayerRef && bInteracting)
 	{
+		bInteracting = false;
 		UE_LOG(LogTemp, Warning, TEXT("Player has left distraction zone"));
 		GameInstanceRef->HideInteractUIWidget();
 		PlayerRef->bCanDistract = false;
 		PlayerRef->ChangeDistractionState("");
+	}
+	else if (Cast<AHouseCharacter>(OtherActor)) {
+		bInteracting = false;
 	}
 }
 

@@ -76,6 +76,8 @@ protected:
 			UPrimitiveComponent* OtherComp,
 			int32 OtherBodyIndex);
 
+	// TESTING
+	bool bInteracting;
 
 	// Reference to Player
 	APlayerCharacter* PlayerRef;
