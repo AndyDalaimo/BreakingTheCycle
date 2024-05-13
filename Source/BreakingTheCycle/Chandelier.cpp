@@ -52,12 +52,12 @@ void AChandelier::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent,
 		if (NPCRef->CharacterName == ECharacterName::SINGER)
 		{
 			UE_LOG(LogTemp, Warning, TEXT("This is the Singer"));
-			CharacterInteractionEvent(NPCRef->CharacterName);
+			CharacterInteractionEvent(NPCRef->CharacterName, NPCRef);
 		}
 		else if (NPCRef->CharacterName == ECharacterName::NOBLEMAN)
 		{
 			UE_LOG(LogTemp, Warning, TEXT("This is the Nobleman who will die"));
-			CharacterInteractionEvent(NPCRef->CharacterName);
+			CharacterInteractionEvent(NPCRef->CharacterName, NPCRef);
 
 		}
 	}

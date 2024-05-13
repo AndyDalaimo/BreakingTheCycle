@@ -30,8 +30,8 @@ public:
 		bool bEndSequenceTriggered;
 
 	UFUNCTION(BlueprintNativeEvent)
-		void CharacterInteractionEvent(ECharacterName name);
-	void CharacterInteractionEvent_Implementation(ECharacterName name) { };
+		void CharacterInteractionEvent(ECharacterName name, AHouseCharacter* actor);
+	void CharacterInteractionEvent_Implementation(ECharacterName name, AHouseCharacter* actor) { };
 
 	UFUNCTION()
 		void InGameTimerEndedEvent();
@@ -54,6 +54,8 @@ private:
 	class AHouseCharacter* NPCRef;
 	
 	class UGrimlessGameInstance* GameInstanceRef;
+
+	bool bCharacterInteracting;
 
 
 };
