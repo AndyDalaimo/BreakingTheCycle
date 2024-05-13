@@ -78,6 +78,7 @@ void UGrimlessGameInstance::ShowNoteUIWidget()
 	if (!NoteUIActive && NoteUI != nullptr)
 	{
 		NoteUI->AddToViewport();
+		NoteUI->SetVisibility(ESlateVisibility::Visible);
 		NoteUIActive = true;
 		// UE_LOG(LogTemp, Display, TEXT("Showing Note UI Widget"));
 		// GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, NoteUI ? NoteUI->GetName() : "Not valid");
@@ -90,6 +91,7 @@ void UGrimlessGameInstance::HideNoteUIWidget()
 	{
 		// Remove All widget -----> Change later
 		NoteUI->RemoveFromParent();
+		NoteUI->SetVisibility(ESlateVisibility::Hidden);
 		NoteUIActive = false;
 		// UE_LOG(LogTemp, Display, TEXT("Hiding Note UI Widget"));
 	}

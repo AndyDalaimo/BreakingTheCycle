@@ -38,6 +38,11 @@ public:
 	// Create Note UI and Show correct note on screen#
 	UFUNCTION(BlueprintCallable)
 		void ShowNoteUIWidget();
+
+	// Event to cue SFX
+	UFUNCTION(BlueprintNativeEvent)
+		void NoteSFXEvent();
+	void NoteSFXEvent_Implementation() { };
 	
 	// Destroy Note UI and reset NoteUIActive
 	UFUNCTION(BlueprintCallable)
