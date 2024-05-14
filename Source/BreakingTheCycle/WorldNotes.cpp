@@ -26,6 +26,8 @@ void AWorldNotes::BeginPlay()
 	PlayerRef = Cast<APlayerCharacter>(GetWorld()->GetFirstPlayerController()->GetPawn());
 	
 	GameInstanceRef = Cast<UGrimlessGameInstance>(GetWorld()->GetGameInstance());
+	
+	NoteMesh->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn, ECollisionResponse::ECR_Ignore);
 }
 
 // Overlap Function to allow player to interact with note
