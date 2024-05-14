@@ -42,7 +42,16 @@ void AWorldDistraction::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent,
 	bool bFromSweep, 
 	const FHitResult& SweepResult)
 {
-	if (OtherComp && PlayerRef != OtherActor && !bInteracting)
+	if (OtherActor == PlayerRef && !bInteracting)
+	{
+		bInteracting = true;
+		// Call BlueprintEvent for this Actor's Distraction Event
+		// PlayerTriggeredEventState();
+		GameInstanceRef->ShowInteractUIWidget();
+		PlayerRef->ChangeDistractionState(DistractionName);
+		PlayerRef->bCanDistract = true;
+	}
+	else if (OtherComp && (PlayerRef != OtherActor) && !bInteracting)
 	{
 		bInteracting = true;
 		NPC = Cast<AHouseCharacter>(OtherActor);
@@ -63,15 +72,6 @@ void AWorldDistraction::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent,
 			// !!!!!! Set a delay to resolve this state after the character reaches the distracted location !!!!!
 			this->ResolvedEventState();
 		}
-	}
-	else if (OtherActor == PlayerRef && !bInteracting)
-	{
-		bInteracting = true;
-		// Call BlueprintEvent for this Actor's Distraction Event
-		// PlayerTriggeredEventState();
-		GameInstanceRef->ShowInteractUIWidget();
-		PlayerRef->ChangeDistractionState(DistractionName);
-		PlayerRef->bCanDistract = true;
 	}
 }
 
