@@ -43,6 +43,11 @@ public:
 	UFUNCTION(BlueprintNativeEvent)
 		void NoteSFXEvent();
 	void NoteSFXEvent_Implementation() { };
+
+	// Event to Trigger End state of surviving the night
+	UFUNCTION(BlueprintNativeEvent)
+		void EndOfNightEvent();
+	void EndOfNightEvent_Implementation() { };
 	
 	// Destroy Note UI and reset NoteUIActive
 	UFUNCTION(BlueprintCallable)
@@ -63,6 +68,8 @@ public:
 	// Destroy Note UI and reset NoteUIActive
 	UFUNCTION(BlueprintCallable)
 		void HideInventoryUIWidget();
+
+	
 
 	// Initialize on Begin Play
 	UFUNCTION(BlueprintCallable)

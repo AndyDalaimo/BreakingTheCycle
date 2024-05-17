@@ -55,23 +55,27 @@ void AWorldDistraction::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent,
 	{
 		bInteracting = true;
 		NPC = Cast<AHouseCharacter>(OtherActor);
-		if (DistractedState == EDistractedState::DISTRACTED && NPC->CharacterName == NPCToDistract)
+		if (NPC)
 		{
-			// Set the state of this NPC in the HOUSESTATEMACHINE actor in world
-			UE_LOG(LogTemp, Display, TEXT("Distract this NPC"));
-			
-			FCurrentState state;
-			state.Character = NPCToDistract;
-			state.State = ENPCState::SUSPICIOUS;
-			HouseStateRef->ChangeCharacterState(state);
+			if (DistractedState == EDistractedState::DISTRACTED && NPC->CharacterName == NPCToDistract)
+			{
+				// Set the state of this NPC in the HOUSESTATEMACHINE actor in world
+				UE_LOG(LogTemp, Display, TEXT("Distract this NPC"));
+				
+				FCurrentState state;
+				state.Character = NPCToDistract;
+				state.State = ENPCState::SUSPICIOUS;
+				HouseStateRef->ChangeCharacterState(state);
 
-			// Update Distraction Location and reset state for Distraction Actor
-			NPC->DistractionLocation = this->DistractionLocation->GetComponentLocation();
-			DistractedState = EDistractedState::NEUTRAL;
+				// Update Distraction Location and reset state for Distraction Actor
+				NPC->DistractionLocation = this->DistractionLocation->GetComponentLocation();
+				DistractedState = EDistractedState::NEUTRAL;
 
-			// !!!!!! Set a delay to resolve this state after the character reaches the distracted location !!!!!
-			this->ResolvedEventState();
+				// !!!!!! Set a delay to resolve this state after the character reaches the distracted location !!!!!
+				this->ResolvedEventState();
+			}
 		}
+		
 	}
 }
 
@@ -88,7 +92,7 @@ void AWorldDistraction::OnEndOverlap(UPrimitiveComponent* OverlappedComponent,
 		PlayerRef->bCanDistract = false;
 		PlayerRef->ChangeDistractionState("");
 	}
-	else if (Cast<AHouseCharacter>(OtherActor)) {
+	else if (Cast<AHouseCharacter>(OtherActor) && bInteracting) {
 		bInteracting = false;
 	}
 }
